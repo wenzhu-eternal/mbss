@@ -9,7 +9,7 @@ import { UserService } from '@modules/user/user.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: ['http://localhost:3001'],
+      origin: 'http://localhost:3000',
       allowedHeaders: ['Content-Type', 'Accept', 'x-auth-token'],
       exposedHeaders: ['x-auth-token'],
     }
@@ -31,6 +31,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-doc/', app, document);
 
-  await app.listen(3000);
+  await app.listen(9000);
 }
 bootstrap();
