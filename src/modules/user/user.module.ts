@@ -1,4 +1,4 @@
-import { OConfigModule } from '@/config/config.module';
+import { OConfigModule } from '@config/config.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserController } from './user.controller';

@@ -61,7 +61,8 @@ export class UserService {
     if (!(await this.userRepository.findByIds([updataUserDto])).length) {
       throw new HttpException({ message: '无此用户，请确认' }, HttpStatus.BAD_REQUEST);
     }
-    if (!!await this.userRepository.findOne({ username: updataUserDto.username })) {
+    const user = await this.userRepository.findOne({ username: updataUserDto.username });
+    if (!!user && user.id !== updataUserDto.id) {
       throw new HttpException({ message: '用户名不能重复' }, HttpStatus.BAD_REQUEST);
     }
     try {
