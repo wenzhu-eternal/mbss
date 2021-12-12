@@ -14,12 +14,6 @@ export default class UserService {
   ) { }
 
   async addUser(addUserDto: AddUserDto): Promise<boolean> {
-    if (!addUserDto.username) {
-      throw new HttpException({ message: '用户名不能为空' }, HttpStatus.BAD_REQUEST);
-    }
-    if (!addUserDto.password) {
-      throw new HttpException({ message: '密码不能为空' }, HttpStatus.BAD_REQUEST);
-    }
     if (!!await this.userRepository.findOne({ username: addUserDto.username })) {
       throw new HttpException({ message: '用户名不能重复' }, HttpStatus.BAD_REQUEST);
     }
@@ -55,9 +49,6 @@ export default class UserService {
   }
 
   async updataUser(updataUserDto: UpdataUserDto): Promise<any> {
-    if (!updataUserDto.username) {
-      throw new HttpException({ message: '用户名不能为空' }, HttpStatus.BAD_REQUEST);
-    }
     if (!(await this.userRepository.findByIds([updataUserDto])).length) {
       throw new HttpException({ message: '无此用户，请确认' }, HttpStatus.BAD_REQUEST);
     }
