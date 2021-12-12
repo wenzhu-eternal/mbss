@@ -2,7 +2,7 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logge
 import { Request, Response } from "express";
 
 @Catch()
-export class HttpExceptionFilter implements ExceptionFilter {
+export default class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     console.log('进入全局异常过滤器 :>> ');
     const ctx = host.switchToHttp();

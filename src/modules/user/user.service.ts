@@ -3,10 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AddUserDto, EDUserDto, GetUsersDto, LoginDto, UpdataUserDto } from './user.dto';
-import { UserEntity } from './user.entity';
+import UserEntity from './user.entity';
 
 @Injectable()
-export class UserService {
+export default class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,

@@ -2,11 +2,11 @@ import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { AddUserDto, EDUserDto, GetUsersDto, LoginDto, UpdataUserDto } from './user.dto';
-import { UserService } from './user.service';
+import UserService from './user.service';
 
 @ApiTags('用户')
 @Controller('user')
-export class UserController {
+export default class UserController {
   constructor(private readonly userService: UserService) { }
 
   @ApiOperation({ summary: '添加用户' })

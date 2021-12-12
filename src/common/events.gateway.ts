@@ -1,6 +1,6 @@
 import { getAllowOrigin } from "@/config/proxy";
-import { UserModule } from "@/modules/user/user.module";
-import { UserService } from "@/modules/user/user.service";
+import UserModule from "@/modules/user/user.module";
+import UserService from "@/modules/user/user.service";
 import { Module } from "@nestjs/common";
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
 import { Socket } from "socket.io";
@@ -26,4 +26,4 @@ class EvensGateway {
   imports: [UserModule],
   providers: [EvensGateway],
 })
-export class EventsModule { };
+export default class EventsModule { };
