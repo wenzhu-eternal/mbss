@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@common/http-exception.filter';
 import { ResponseInterceptor } from '@common/response.interceptor';
+import { ValidationPipe } from '@/common/validation.pipe';
 import { AuthGuard } from '@common/auth.guard';
 import { UserService } from '@modules/user/user.service';
 
@@ -19,6 +20,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe());
 
   const reflector = app.get(UserService);
   app.useGlobalGuards(new AuthGuard(reflector));

@@ -30,6 +30,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       JSON.stringify(mesLog),
       'HttpExceptionFilter'
     );
-    response.status(status).json(mesLog);
+    response.status(HttpStatus.OK).json(mesLog);
   }
 }

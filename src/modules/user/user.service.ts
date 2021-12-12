@@ -34,12 +34,12 @@ export class UserService {
     }
   }
 
-  async findUsers(getUsersDto: GetUsersDto): Promise<any> {
+  async findUsers({ page = 1, pageSize = 10 }: GetUsersDto): Promise<any> {
     try {
       const total = await this.userRepository.count();
       const result = await this.userRepository.find({
-        skip: (getUsersDto.page - 1) * getUsersDto.pageSize,
-        take: getUsersDto.pageSize,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
         cache: true,
       });
       return {
@@ -93,12 +93,6 @@ export class UserService {
   }
 
   async login(loginDto: LoginDto): Promise<any> {
-    if (!loginDto.username) {
-      throw new HttpException({ message: '用户名不能为空' }, HttpStatus.BAD_REQUEST);
-    }
-    if (!loginDto.password) {
-      throw new HttpException({ message: '密码不能为空' }, HttpStatus.BAD_REQUEST);
-    }
     const result = await this.userRepository.findOne({ username: loginDto.username, password: loginDto.password, isDisable: false });
     if (result) {
       try {
