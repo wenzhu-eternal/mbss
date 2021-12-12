@@ -23,6 +23,9 @@ export class UserEntity {
   createTime: Date;
 
   @Column({ nullable: true })
+  socketId: string;
+
+  @Column({ nullable: true })
   updataTime: Date;
 
   @Column({ nullable: true })

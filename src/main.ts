@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { getAllowOrigin } from '@/config/proxy';
 import { HttpExceptionFilter } from '@common/http-exception.filter';
 import { ResponseInterceptor } from '@common/response.interceptor';
 import { ValidationPipe } from '@/common/validation.pipe';
@@ -11,7 +12,7 @@ import { UserService } from '@modules/user/user.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: 'http://localhost:3000',
+      origin: getAllowOrigin(),
       allowedHeaders: ['Content-Type', 'Accept', 'x-auth-token'],
       exposedHeaders: ['x-auth-token'],
     }

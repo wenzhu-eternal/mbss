@@ -139,4 +139,12 @@ export class UserService {
   async creatToken(userData): Promise<any> {
     return this.jwtService.sign(userData);
   }
+
+  onSocketID(token: string, socketId?: string): void {
+    try {
+      this.userRepository.update({ lastLoginToken: token }, {
+        socketId: socketId || null
+      });
+    } catch (error) { }
+  }
 }
