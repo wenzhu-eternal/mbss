@@ -3,10 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AddUserDto, EDUserDto, GetUsersDto, LoginDto, UpdataUserDto } from './user.dto';
-import { UserEntity } from './user.entity';
+import UserEntity from './user.entity';
 
 @Injectable()
-export class UserService {
+export default class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
@@ -14,12 +14,6 @@ export class UserService {
   ) { }
 
   async addUser(addUserDto: AddUserDto): Promise<boolean> {
-    if (!addUserDto.username) {
-      throw new HttpException({ message: '用户名不能为空' }, HttpStatus.BAD_REQUEST);
-    }
-    if (!addUserDto.password) {
-      throw new HttpException({ message: '密码不能为空' }, HttpStatus.BAD_REQUEST);
-    }
     if (!!await this.userRepository.findOne({ username: addUserDto.username })) {
       throw new HttpException({ message: '用户名不能重复' }, HttpStatus.BAD_REQUEST);
     }
@@ -34,12 +28,12 @@ export class UserService {
     }
   }
 
-  async findUsers(getUsersDto: GetUsersDto): Promise<any> {
+  async findUsers({ page = 1, pageSize = 10 }: GetUsersDto): Promise<any> {
     try {
       const total = await this.userRepository.count();
       const result = await this.userRepository.find({
-        skip: (getUsersDto.page - 1) * getUsersDto.pageSize,
-        take: getUsersDto.pageSize,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
         cache: true,
       });
       return {
@@ -55,9 +49,6 @@ export class UserService {
   }
 
   async updataUser(updataUserDto: UpdataUserDto): Promise<any> {
-    if (!updataUserDto.username) {
-      throw new HttpException({ message: '用户名不能为空' }, HttpStatus.BAD_REQUEST);
-    }
     if (!(await this.userRepository.findByIds([updataUserDto])).length) {
       throw new HttpException({ message: '无此用户，请确认' }, HttpStatus.BAD_REQUEST);
     }
@@ -93,12 +84,6 @@ export class UserService {
   }
 
   async login(loginDto: LoginDto): Promise<any> {
-    if (!loginDto.username) {
-      throw new HttpException({ message: '用户名不能为空' }, HttpStatus.BAD_REQUEST);
-    }
-    if (!loginDto.password) {
-      throw new HttpException({ message: '密码不能为空' }, HttpStatus.BAD_REQUEST);
-    }
     const result = await this.userRepository.findOne({ username: loginDto.username, password: loginDto.password, isDisable: false });
     if (result) {
       try {
@@ -144,5 +129,13 @@ export class UserService {
 
   async creatToken(userData): Promise<any> {
     return this.jwtService.sign(userData);
+  }
+
+  onSocketID(token: string, socketId?: string): void {
+    try {
+      this.userRepository.update({ lastLoginToken: token }, {
+        socketId: socketId || null
+      });
+    } catch (error) { }
   }
 }

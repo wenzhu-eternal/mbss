@@ -18,4 +18,4 @@ import { resolve } from 'path';
   ],
   exports: [JwtModule]
 })
-export class OConfigModule { }
+export default class OConfigModule { }

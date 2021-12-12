@@ -1,15 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppModule } from './app.module';
-import { HttpExceptionFilter } from '@common/http-exception.filter';
-import { ResponseInterceptor } from '@common/response.interceptor';
-import { AuthGuard } from '@common/auth.guard';
-import { UserService } from '@modules/user/user.service';
+import AppModule from '@/app.module';
+import { getAllowOrigin } from '@/config/proxy';
+import HttpExceptionFilter from '@/common/http-exception.filter';
+import ResponseInterceptor from '@/common/response.interceptor';
+import ValidationPipe from '@/common/validation.pipe';
+import LoggerGlobal from '@/common/logger.middleware';
+import AuthGuard from '@/common/auth.guard';
+import UserService from '@/modules/user/user.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: 'http://localhost:3000',
+      origin: getAllowOrigin(),
       allowedHeaders: ['Content-Type', 'Accept', 'x-auth-token'],
       exposedHeaders: ['x-auth-token'],
     }
@@ -17,8 +20,10 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
+  app.use(LoggerGlobal);
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe());
 
   const reflector = app.get(UserService);
   app.useGlobalGuards(new AuthGuard(reflector));
