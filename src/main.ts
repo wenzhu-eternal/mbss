@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@common/http-exception.filter';
 import { ResponseInterceptor } from '@common/response.interceptor';
 import { ValidationPipe } from '@/common/validation.pipe';
+import { LoggerGlobal } from '@common/logger.middleware';
 import { AuthGuard } from '@common/auth.guard';
 import { UserService } from '@modules/user/user.service';
 
@@ -18,6 +19,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
+  app.use(LoggerGlobal);
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
