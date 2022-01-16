@@ -6,12 +6,9 @@ import UserEntity from './user.entity';
 import UserService from './user.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([UserEntity]),
-    OConfigModule,
-  ],
+  imports: [TypeOrmModule.forFeature([UserEntity]), OConfigModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],
 })
-export default class UserModule { }
+export default class UserModule {}

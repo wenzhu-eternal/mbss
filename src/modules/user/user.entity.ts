@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'user' })
 export default class UserEntity {
   @PrimaryGeneratedColumn({
-    comment: '自增ID'
+    comment: '自增ID',
   })
   id: number;
 

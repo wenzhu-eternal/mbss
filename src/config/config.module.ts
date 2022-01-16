@@ -16,6 +16,6 @@ import { resolve } from 'path';
       inject: [ConfigService],
     }),
   ],
-  exports: [JwtModule]
+  exports: [JwtModule],
 })
-export default class OConfigModule { }
+export default class OConfigModule {}

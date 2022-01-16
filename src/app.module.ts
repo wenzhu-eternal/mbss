@@ -6,4 +6,4 @@ import Modules from '@/modules/index.module';
 @Module({
   imports: [OConfigModule, EventsModule, Modules],
 })
-export default class AppModule { }
+export default class AppModule {}

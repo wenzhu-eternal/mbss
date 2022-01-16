@@ -1,15 +1,13 @@
-import UserService from "@modules/user/user.service";
-import { HttpException, HttpStatus } from "@nestjs/common";
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import jwtSecret from "@config/jwtSecret";
+import UserService from '@modules/user/user.service';
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import jwtSecret from '@config/jwtSecret';
 
 @Injectable()
 export default class AuthGuard implements CanActivate {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
-  async canActivate(
-    context: ExecutionContext
-  ): Promise<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     console.log('进入全局权限守卫 :>> ');
     const request = context.switchToHttp().getRequest();
     if (this.hasUrl(this.urlList, request.url.split('?')[0])) {
@@ -20,12 +18,12 @@ export default class AuthGuard implements CanActivate {
     if (token) {
       try {
         return await this.userService.verifiLogin(token);
-      } catch { };
+      } catch {}
     }
     throw new HttpException('没有授权，请先登录', HttpStatus.UNAUTHORIZED);
   }
 
-  private urlList: string[] = jwtSecret.routerWhitelist
+  private urlList: string[] = jwtSecret.routerWhitelist;
 
   private hasUrl(urlList: string[], url: string): boolean {
     let flag = false;

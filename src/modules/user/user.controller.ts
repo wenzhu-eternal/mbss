@@ -1,13 +1,19 @@
 import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { AddUserDto, EDUserDto, GetUsersDto, LoginDto, UpdataUserDto } from './user.dto';
+import {
+  AddUserDto,
+  EDUserDto,
+  GetUsersDto,
+  LoginDto,
+  UpdataUserDto,
+} from './user.dto';
 import UserService from './user.service';
 
 @ApiTags('用户')
 @Controller('user')
 export default class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: '添加用户' })
   @Post('addUser')
@@ -35,7 +41,10 @@ export default class UserController {
 
   @ApiOperation({ summary: '登录' })
   @Post('login')
-  async login(@Body() loginDto: LoginDto, @Res() response: Response): Promise<any> {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res() response: Response,
+  ): Promise<any> {
     const result = await this.userService.login(loginDto);
     if (result) return response.setHeader('x-auth-token', result).json(true);
     return result;

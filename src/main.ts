@@ -15,7 +15,7 @@ async function bootstrap() {
       origin: getAllowOrigin(),
       allowedHeaders: ['Content-Type', 'Accept', 'x-auth-token'],
       exposedHeaders: ['x-auth-token'],
-    }
+    },
   });
 
   app.setGlobalPrefix('api');
