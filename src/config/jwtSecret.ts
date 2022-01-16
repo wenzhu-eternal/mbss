@@ -1,9 +1,7 @@
 export default {
   secret: 'mbss',
   signOptions: {
-    expiresIn: '1d'
+    expiresIn: '1d',
   },
-  routerWhitelist: [
-    '/api/user/login',
-  ],
-}
+  routerWhitelist: ['/api/user/login'],
+};

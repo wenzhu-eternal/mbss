@@ -1,12 +1,20 @@
-import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsNotEmpty } from "class-validator";
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
 export class LoginDto {
-  @ApiPropertyOptional({ required: true, description: '用户名', default: 'admin' })
+  @ApiPropertyOptional({
+    required: true,
+    description: '用户名',
+    default: 'admin',
+  })
   @IsNotEmpty({ message: '用户名不能为空' })
   readonly username: string;
 
-  @ApiPropertyOptional({ required: true, description: '密码', default: '888888' })
+  @ApiPropertyOptional({
+    required: true,
+    description: '密码',
+    default: '888888',
+  })
   @IsNotEmpty({ message: '密码不能为空' })
   readonly password: string;
 }
@@ -15,7 +23,11 @@ export class AddUserDto extends LoginDto {
   @ApiPropertyOptional({ required: true, description: '电话', default: '110' })
   readonly phone: string;
 
-  @ApiPropertyOptional({ required: true, description: 'e-mil', default: '110@qq.com' })
+  @ApiPropertyOptional({
+    required: true,
+    description: 'e-mil',
+    default: '110@qq.com',
+  })
   readonly emil: string;
 }
 

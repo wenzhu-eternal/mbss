@@ -1,7 +1,7 @@
-import { Module } from "@nestjs/common";
-import UserModule from "@/modules/user/user.module";
+import { Module } from '@nestjs/common';
+import UserModule from '@/modules/user/user.module';
 
 @Module({
-  imports: [UserModule]
+  imports: [UserModule],
 })
-export default class Modules { };
+export default class Modules {}

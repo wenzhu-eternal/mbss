@@ -1,5 +1,12 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from "@nestjs/common";
-import { Request, Response } from "express";
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpException,
+  HttpStatus,
+  Logger,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
 
 @Catch()
 export default class HttpExceptionFilter implements ExceptionFilter {
@@ -16,7 +23,8 @@ export default class HttpExceptionFilter implements ExceptionFilter {
     const message =
       exception.message ||
       exception.message.message ||
-      exception.message.error || null;
+      exception.message.error ||
+      null;
     const mesLog = {
       statusCode: status,
       timestamp: new Date().toISOString(),
@@ -25,11 +33,7 @@ export default class HttpExceptionFilter implements ExceptionFilter {
       data: message,
     };
 
-    Logger.error(
-      '错误信息',
-      JSON.stringify(mesLog),
-      'HttpExceptionFilter'
-    );
+    Logger.error('错误信息', JSON.stringify(mesLog), 'HttpExceptionFilter');
     response.status(HttpStatus.OK).json(mesLog);
   }
 }
