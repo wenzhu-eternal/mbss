@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "prepare": "rm -rf .husky && husky install && husky add .husky/pre-commit \"npm run lint && git add .\" && husky add .husky/pre-push \"npm run ci:deploy\"",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
