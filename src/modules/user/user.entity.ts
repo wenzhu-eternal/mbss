@@ -8,7 +8,7 @@ export default class UserEntity {
   id: number;
 
   @Column({})
-  username: string;
+  account: string;
 
   @Column({ select: false })
   password: string;
@@ -27,9 +27,6 @@ export default class UserEntity {
 
   @Column({ nullable: true })
   updataTime: Date;
-
-  @Column({ nullable: true })
-  lastLoginToken: string;
 
   @Column({ nullable: true })
   lastLoginTime: Date;

@@ -8,7 +8,7 @@ export class LoginDto {
     default: 'admin',
   })
   @IsNotEmpty({ message: '用户名不能为空' })
-  readonly username: string;
+  readonly account: string;
 
   @ApiPropertyOptional({
     required: true,

@@ -19,14 +19,14 @@ class EvensGateway {
   @SubscribeMessage('addSocket')
   onAddSocket(
     @ConnectedSocket() { id }: Socket,
-    @MessageBody() { token }: { token: string },
+    @MessageBody() { userId }: { userId: number },
   ): void {
-    this.userService.onSocketID(token, id);
+    if (userId) this.userService.onSocketID(userId, id);
   }
 
   @SubscribeMessage('delectSocket')
-  onDelectSocket(_, @MessageBody() { token }: { token: string }): void {
-    this.userService.onSocketID(token);
+  onDelectSocket(_, @MessageBody() { userId }: { userId: number }): void {
+    if (userId) this.userService.onSocketID(userId);
   }
 }
 

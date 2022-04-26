@@ -21,7 +21,7 @@ export default class UserService {
 
   async addUser(addUserDto: AddUserDto): Promise<boolean> {
     if (
-      !!(await this.userRepository.findOne({ username: addUserDto.username }))
+      !!(await this.userRepository.findOne({ account: addUserDto.account }))
     ) {
       throw new HttpException(
         { message: '用户名不能重复' },
@@ -73,7 +73,7 @@ export default class UserService {
       );
     }
     const user = await this.userRepository.findOne({
-      username: updataUserDto.username,
+      account: updataUserDto.account,
     });
     if (!!user && user.id !== updataUserDto.id) {
       throw new HttpException(
@@ -125,7 +125,7 @@ export default class UserService {
 
   async login(loginDto: LoginDto): Promise<any> {
     const result = await this.userRepository.findOne({
-      username: loginDto.username,
+      account: loginDto.account,
       password: loginDto.password,
       isDisable: false,
     });
@@ -133,16 +133,15 @@ export default class UserService {
       try {
         const token = await this.creatToken({
           id: result.id,
-          username: result.username,
+          account: result.account,
         });
         await this.userRepository.update(
           { id: result.id },
           {
-            lastLoginToken: token,
             lastLoginTime: new Date(),
           },
         );
-        return token;
+        return { id: result.id, token };
       } catch (error) {
         throw new HttpException(
           { message: error.sqlMessage },
@@ -153,52 +152,16 @@ export default class UserService {
     return false;
   }
 
-  async verifiLogin(token: string): Promise<any> {
-    const tokenDecode = await this.jwtService.decode(token);
-    try {
-      const user = await this.userRepository.findOne({ id: tokenDecode['id'] });
-      if (
-        user.lastLoginToken === token &&
-        new Date().getTime() / 1000 < tokenDecode['exp']
-      ) {
-        return true;
-      }
-      throw new HttpException('没有授权，请先登录', HttpStatus.UNAUTHORIZED);
-    } catch (error) {
-      throw new HttpException(
-        { message: error.sqlMessage },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
-  async loginOut(token: string): Promise<any> {
-    try {
-      await this.userRepository.update(
-        { id: await this.jwtService.decode(token)['id'] },
-        {
-          lastLoginToken: null,
-        },
-      );
-      return true;
-    } catch (error) {
-      throw new HttpException(
-        { message: error.sqlMessage },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
   async creatToken(userData): Promise<any> {
     return this.jwtService.sign(userData);
   }
 
-  onSocketID(token: string, socketId?: string): void {
+  onSocketID(userId: number, socketId?: string): void {
     try {
       this.userRepository.update(
-        { lastLoginToken: token },
+        { id: userId },
         {
-          socketId: socketId || null,
+          socketId: socketId,
         },
       );
     } catch (error) {}
