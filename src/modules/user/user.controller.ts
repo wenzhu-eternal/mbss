@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import {
   AddUserDto,
   EDUserDto,
@@ -42,17 +42,40 @@ export default class UserController {
   @ApiOperation({ summary: '登录' })
   @Post('login')
   async login(
-    @Body() loginDto: LoginDto,
+    @Req() request,
     @Res() response: Response,
+    @Body() loginDto: LoginDto,
   ): Promise<any> {
-    const result = await this.userService.login(loginDto);
-    if (result) return response.setHeader('x-auth-token', result).json(true);
-    return result;
+    const { id, token } = await this.userService.login(loginDto);
+    if (id) {
+      request.session.user = token;
+      response.cookie('token', token, { httpOnly: true });
+    } else {
+      request.session.user = null;
+      response.clearCookie('token');
+    }
+
+    return response.send({
+      statusCode: 0,
+      timestamp: new Date().toISOString(),
+      path: request.url,
+      message: '请求成功',
+      data: !!id ? { success: true, id } : { success: false },
+    });
   }
 
   @ApiOperation({ summary: '登出' })
   @Get('loginOut')
-  async loginOut(@Req() request: Request): Promise<any> {
-    return this.userService.loginOut(request.header('x-auth-token'));
+  async loginOut(@Req() request, @Res() response: Response): Promise<any> {
+    request.session.user = null;
+    response.clearCookie('token');
+
+    return response.send({
+      statusCode: 0,
+      timestamp: new Date().toISOString(),
+      path: request.url,
+      message: '请求成功',
+      data: { success: true },
+    });
   }
 }
