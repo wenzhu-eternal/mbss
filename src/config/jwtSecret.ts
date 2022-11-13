@@ -3,5 +3,5 @@ export default {
   signOptions: {
     expiresIn: '1d',
   },
-  routerWhitelist: ['/api/user/login', '/api/file/upload'],
+  routerWhitelist: ['user/login', 'file/upload'],
 };

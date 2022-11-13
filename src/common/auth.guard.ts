@@ -27,7 +27,7 @@ export default class AuthGuard implements CanActivate {
 
   private hasUrl(urlList: string[], url: string): boolean {
     let flag = false;
-    if (urlList.indexOf(url) >= 0) {
+    if (urlList.some((newUrl) => url.startsWith(`/api/${newUrl}`))) {
       flag = true;
     }
     return flag;
