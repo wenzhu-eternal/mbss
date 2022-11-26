@@ -21,7 +21,9 @@ export default class UserService {
 
   async addUser(addUserDto: AddUserDto): Promise<boolean> {
     if (
-      !!(await this.userRepository.findOne({ account: addUserDto.account }))
+      !!(await this.userRepository.findOne({
+        where: { account: addUserDto.account },
+      }))
     ) {
       throw new HttpException(
         { message: '用户名不能重复' },
@@ -73,7 +75,7 @@ export default class UserService {
       );
     }
     const user = await this.userRepository.findOne({
-      account: updataUserDto.account,
+      where: { account: updataUserDto.account },
     });
     if (!!user && user.id !== updataUserDto.id) {
       throw new HttpException(
@@ -99,7 +101,9 @@ export default class UserService {
   }
 
   async edUser(edUsersDto: EDUserDto): Promise<any> {
-    const result = await this.userRepository.findOne({ id: edUsersDto.id });
+    const result = await this.userRepository.findOne({
+      where: { id: edUsersDto.id },
+    });
     if (!result) {
       throw new HttpException(
         { message: '无此用户，请确认' },
@@ -125,9 +129,11 @@ export default class UserService {
 
   async login(loginDto: LoginDto): Promise<any> {
     const result = await this.userRepository.findOne({
-      account: loginDto.account,
-      password: loginDto.password,
-      isDisable: false,
+      where: {
+        account: loginDto.account,
+        password: loginDto.password,
+        isDisable: false,
+      },
     });
     if (result) {
       try {
@@ -161,7 +167,7 @@ export default class UserService {
       this.userRepository.update(
         { id: userId },
         {
-          socketId: socketId,
+          socketId: socketId || null,
         },
       );
     } catch (error) {}
