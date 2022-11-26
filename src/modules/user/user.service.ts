@@ -167,7 +167,7 @@ export default class UserService {
       this.userRepository.update(
         { id: userId },
         {
-          socketId: socketId,
+          socketId: socketId || null,
         },
       );
     } catch (error) {}
