@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MulterModule } from '@nestjs/platform-express';
@@ -20,7 +21,8 @@ import { resolve } from 'path';
       useFactory: (config: ConfigService) => config.get('file'),
       inject: [ConfigService],
     }),
+    HttpModule.register({}),
   ],
-  exports: [JwtModule, MulterModule],
+  exports: [JwtModule, MulterModule, HttpModule],
 })
 export default class OConfigModule {}
