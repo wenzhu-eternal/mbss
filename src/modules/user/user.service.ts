@@ -161,15 +161,4 @@ export default class UserService {
   async creatToken(userData): Promise<any> {
     return this.jwtService.sign(userData);
   }
-
-  onSocketID(userId: number, socketId?: string): void {
-    try {
-      this.userRepository.update(
-        { id: userId },
-        {
-          socketId: socketId || null,
-        },
-      );
-    } catch (error) {}
-  }
 }

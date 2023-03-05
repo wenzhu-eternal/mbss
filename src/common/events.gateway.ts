@@ -1,6 +1,5 @@
 import { getAllowOrigin } from '@/config/proxy';
-import UserModule from '@/modules/user/user.module';
-import UserService from '@/modules/user/user.service';
+import { RedisService } from '@liaoliaots/nestjs-redis';
 import { Module } from '@nestjs/common';
 import {
   ConnectedSocket,
@@ -8,30 +7,37 @@ import {
   SubscribeMessage,
   WebSocketGateway,
 } from '@nestjs/websockets';
+import Redis from 'ioredis';
 import { Socket } from 'socket.io';
 
 @WebSocketGateway({
   cors: { origin: getAllowOrigin() },
 })
 class EvensGateway {
-  constructor(private readonly userService: UserService) {}
+  private readonly redis: Redis;
+
+  constructor(private readonly redisService: RedisService) {
+    this.redis = this.redisService.getClient();
+  }
 
   @SubscribeMessage('addSocket')
   onAddSocket(
     @ConnectedSocket() { id }: Socket,
     @MessageBody() { userId }: { userId: number },
   ): void {
-    if (userId) this.userService.onSocketID(userId, id);
+    if (userId)
+      this.redis.hset('socket', {
+        [userId]: JSON.stringify({ socketId: id }),
+      });
   }
 
   @SubscribeMessage('delectSocket')
   onDelectSocket(_, @MessageBody() { userId }: { userId: number }): void {
-    if (userId) this.userService.onSocketID(userId);
+    if (userId) this.redis.hdel('socket', String(userId));
   }
 }
 
 @Module({
-  imports: [UserModule],
   providers: [EvensGateway],
 })
 export default class EventsModule {}

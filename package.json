@@ -1,6 +1,6 @@
 {
   "name": "mbss",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "",
   "author": "",
   "private": true,
@@ -23,6 +23,7 @@
     "ci:deploy": "mb-ci deploy"
   },
   "dependencies": {
+    "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "^9.3.9",
     "@nestjs/core": "^9.3.9",
@@ -39,6 +40,7 @@
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.7",
     "express-session": "^1.17.3",
+    "ioredis": "^5.3.1",
     "mb-ci": "^0.1.1",
     "mysql2": "^3.1.2",
     "nestjs-config": "^1.4.10",
