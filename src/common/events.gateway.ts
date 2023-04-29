@@ -31,7 +31,9 @@ class EvensGateway {
         [userId]: JSON.stringify({ socketId: id }),
       });
       Logger.log(
-        `[${dayjs().format('YYYY-MM-DD HH:mm:ss')}] 用户${userId}进行socket`,
+        `[${dayjs().format(
+          'YYYY-MM-DD HH:mm:ss',
+        )}] ID为${userId}用户进行socket连接`,
       );
     }
   }
@@ -41,7 +43,9 @@ class EvensGateway {
     if (userId) {
       this.redis.hdel('socket', String(userId));
       Logger.log(
-        `[${dayjs().format('YYYY-MM-DD HH:mm:ss')}] 用户${userId}取消socket`,
+        `[${dayjs().format(
+          'YYYY-MM-DD HH:mm:ss',
+        )}] ID为${userId}用户断开socket连接`,
       );
     }
   }
