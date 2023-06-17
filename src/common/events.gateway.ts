@@ -1,4 +1,4 @@
-import { getAllowOrigin } from '@/config/proxy';
+import config from '@/config/config.default';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { Logger, Module } from '@nestjs/common';
 import {
@@ -12,7 +12,7 @@ import Redis from 'ioredis';
 import { Socket } from 'socket.io';
 
 @WebSocketGateway({
-  cors: { origin: getAllowOrigin() },
+  cors: { origin: config.allowOrigin },
 })
 class EvensGateway {
   private readonly redis: Redis;

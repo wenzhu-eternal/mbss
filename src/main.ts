@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import AppModule from '@/app.module';
-import { getAllowOrigin } from '@/config/proxy';
+import config from '@/config/config.default';
 import HttpExceptionFilter from '@/common/http-exception.filter';
 import ResponseInterceptor from '@/common/response.interceptor';
 import ValidationPipe from '@/common/validation.pipe';
@@ -15,7 +15,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
       credentials: true,
-      origin: getAllowOrigin(),
+      origin: config.allowOrigin,
       allowedHeaders: ['Content-Type', 'Accept'],
     },
   });
@@ -24,13 +24,7 @@ async function bootstrap() {
 
   app.use(LoggerGlobal);
   app.use(cookieParser());
-  app.use(
-    session({
-      secret: 'mbss',
-      resave: false,
-      saveUninitialized: false,
-    }),
-  );
+  app.use(session(config.session));
 
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
@@ -39,12 +33,12 @@ async function bootstrap() {
   const reflector = app.get(JwtService);
   app.useGlobalGuards(new AuthGuard(reflector));
 
-  const config = new DocumentBuilder()
-    .setTitle('mbss')
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle(config.projectName)
     .setDescription('a pribate Middle and backstage service')
-    .setVersion('0.0.1')
+    .setVersion('1.0.0')
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api-doc/', app, document);
 
   await app.listen(9000);

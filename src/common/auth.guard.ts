@@ -1,7 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import jwtSecret from '@config/jwtSecret';
+import config from '@config/config.default';
 
 @Injectable()
 export default class AuthGuard implements CanActivate {
@@ -23,7 +23,7 @@ export default class AuthGuard implements CanActivate {
     throw new HttpException('没有授权，请先登录', HttpStatus.UNAUTHORIZED);
   }
 
-  private urlList: string[] = jwtSecret.routerWhitelist;
+  private urlList: string[] = config.routerWhitelist;
 
   private hasUrl(urlList: string[], url: string): boolean {
     let flag = false;
