@@ -1,4 +1,4 @@
-import { IDefineConfig } from './config.default';
+import { IDefineConfig } from './util';
 
 const config: IDefineConfig = {};
 
