@@ -11,19 +11,20 @@ import { resolve } from 'path';
   imports: [
     ConfigModule.load(resolve(__dirname, '**/!(*.d).{ts,js}')),
     TypeOrmModule.forRootAsync({
-      useFactory: (config: ConfigService) => config.get('config').mysql,
+      useFactory: (config: ConfigService) => config.get('config.default').mysql,
       inject: [ConfigService],
     }),
     RedisModule.forRootAsync({
-      useFactory: (config: ConfigService) => config.get('config').redis,
+      useFactory: (config: ConfigService) => config.get('config.default').redis,
       inject: [ConfigService],
     }),
     JwtModule.registerAsync({
-      useFactory: (config: ConfigService) => config.get('config').jwtSecret,
+      useFactory: (config: ConfigService) =>
+        config.get('config.default').jwtSecret,
       inject: [ConfigService],
     }),
     MulterModule.registerAsync({
-      useFactory: (config: ConfigService) => config.get('config').file,
+      useFactory: (config: ConfigService) => config.get('config.default').file,
       inject: [ConfigService],
     }),
     HttpModule.register({}),
