@@ -11,7 +11,7 @@ import production from './config.production';
 
 export interface IDefineConfig {
   projectName?: string;
-  allowOrigin?: string;
+  allowOrigin?: string | string[];
   routerWhitelist?: string[];
   jwtSecret?: JwtModuleOptions;
   session?: SessionOptions;

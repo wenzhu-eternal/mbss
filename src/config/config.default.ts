@@ -7,7 +7,7 @@ export default defineConfig({
   routerWhitelist: ['user/login', 'file/upload'],
   jwtSecret: {
     signOptions: {
-      expiresIn: '1d',
+      expiresIn: '7d',
     },
   },
   session: {
