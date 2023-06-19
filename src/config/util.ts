@@ -36,13 +36,16 @@ function mergeObjects(obj1, obj2) {
 }
 
 export const defineConfig = (config: IDefineConfig) => {
-  const { projectName, fileDirName, jwtSecret, session, file, mysql } = config;
+  let newConfig: IDefineConfig =
+    process.env.NODE_ENV === 'development'
+      ? config
+      : mergeObjects(config, production);
 
-  const createProjectDir = join(fileDirName, projectName);
-  if (!fs.existsSync(createProjectDir)) fs.mkdirSync(createProjectDir);
+  const { fileDirName, projectName, jwtSecret, session, file, mysql } =
+    newConfig;
 
-  const newConfig: IDefineConfig = {
-    ...config,
+  newConfig = {
+    ...newConfig,
     jwtSecret: {
       ...jwtSecret,
       secret: jwtSecret.secret || projectName,
@@ -70,7 +73,8 @@ export const defineConfig = (config: IDefineConfig) => {
     },
   };
 
-  return process.env.NODE_ENV === 'development'
-    ? newConfig
-    : mergeObjects(newConfig, production);
+  const createProjectDir = join(fileDirName, projectName);
+  if (!fs.existsSync(createProjectDir)) fs.mkdirSync(createProjectDir);
+
+  return newConfig;
 };
