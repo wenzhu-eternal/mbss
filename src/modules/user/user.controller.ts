@@ -2,10 +2,14 @@ import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import {
+  AddRoleDto,
   AddUserDto,
+  EDRoleDto,
   EDUserDto,
+  GetRolesDto,
   GetUsersDto,
   LoginDto,
+  UpdataRoleDto,
   UpdataUserDto,
 } from './user.dto';
 import UserService from './user.service';
@@ -37,6 +41,36 @@ export default class UserController {
   @Get('edUser')
   async edUser(@Query() edUsersDto: EDUserDto): Promise<any> {
     return this.userService.edUser(edUsersDto);
+  }
+
+  @ApiOperation({ summary: '查看所有路由' })
+  @Get('findApiRoutes')
+  async findApiRoutes(): Promise<any> {
+    return this.userService.findApiRoutes();
+  }
+
+  @ApiOperation({ summary: '添加权限' })
+  @Post('addRole')
+  async addRole(@Body() addRoleDto: AddRoleDto): Promise<any> {
+    return this.userService.addRole(addRoleDto);
+  }
+
+  @ApiOperation({ summary: '查看所有权限' })
+  @Get('findRoles')
+  async findRoles(@Query() getRolesDto: GetRolesDto): Promise<any> {
+    return this.userService.findRoles(getRolesDto);
+  }
+
+  @ApiOperation({ summary: '更新权限' })
+  @Post('updataRole')
+  async updataRole(@Body() updataRoleDto: UpdataRoleDto): Promise<any> {
+    return this.userService.updataRole(updataRoleDto);
+  }
+
+  @ApiOperation({ summary: '启用或禁用权限' })
+  @Get('edRole')
+  async edRole(@Query() edRolesDto: EDRoleDto): Promise<any> {
+    return this.userService.edRole(edRolesDto);
   }
 
   @ApiOperation({ summary: '登录' })

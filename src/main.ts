@@ -1,6 +1,5 @@
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
-import { JwtService } from '@nestjs/jwt';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import AppModule from '@/app.module';
@@ -10,6 +9,8 @@ import ResponseInterceptor from '@/common/response.interceptor';
 import ValidationPipe from '@/common/validation.pipe';
 import LoggerGlobal from '@/common/logger.middleware';
 import AuthGuard from '@/common/auth.guard';
+import { createApiRoutesJson } from '@/common/apiRoutes';
+import UserService from '@/modules/user/user.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -30,7 +31,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
 
-  const reflector = app.get(JwtService);
+  const reflector = app.get(UserService);
   app.useGlobalGuards(new AuthGuard(reflector));
 
   const swaggerConfig = new DocumentBuilder()
@@ -42,5 +43,7 @@ async function bootstrap() {
   SwaggerModule.setup('api-doc/', app, document);
 
   await app.listen(9000);
+
+  createApiRoutesJson(app);
 }
 bootstrap();
