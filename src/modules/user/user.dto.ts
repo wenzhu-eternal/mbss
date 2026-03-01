@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class LoginDto {
   @ApiPropertyOptional({
@@ -35,26 +36,33 @@ export class AddUserDto extends LoginDto {
     description: '权限ID',
     default: 1,
   })
+  @IsNumber({}, { message: '权限ID必须是数字' })
   readonly role: number;
 }
 
 export class GetUsersDto {
   @ApiPropertyOptional({ required: true, description: '页码', default: 1 })
+  @IsNumber({}, { message: '页码必须是数字' })
+  @Type(() => Number)
   readonly page: number;
 
   @ApiPropertyOptional({ required: true, description: '单页数量', default: 10 })
+  @IsNumber({}, { message: '单页数量必须是数字' })
+  @Type(() => Number)
   readonly pageSize: number;
 }
 
 export class UpdataUserDto extends AddUserDto {
   @ApiPropertyOptional({ required: true, description: '用户ID', default: 1 })
   @IsNotEmpty({ message: '用户ID不能为空' })
+  @IsNumber({}, { message: '用户ID必须是数字' })
   readonly id: number;
 }
 
 export class EDUserDto {
   @ApiPropertyOptional({ required: true, description: '用户ID', default: 1 })
   @IsNotEmpty({ message: '用户ID不能为空' })
+  @IsNumber({}, { message: '用户ID必须是数字' })
   readonly id: number;
 }
 
@@ -76,20 +84,26 @@ export class AddRoleDto {
 
 export class GetRolesDto {
   @ApiPropertyOptional({ required: true, description: '页码', default: 1 })
+  @IsNumber({}, { message: '页码必须是数字' })
+  @Type(() => Number)
   readonly page: number;
 
   @ApiPropertyOptional({ required: true, description: '单页数量', default: 10 })
+  @IsNumber({}, { message: '单页数量必须是数字' })
+  @Type(() => Number)
   readonly pageSize: number;
 }
 
 export class UpdataRoleDto extends AddRoleDto {
   @ApiPropertyOptional({ required: true, description: '权限ID', default: 1 })
   @IsNotEmpty({ message: '权限ID不能为空' })
+  @IsNumber({}, { message: '权限ID必须是数字' })
   readonly id: number;
 }
 
 export class EDRoleDto {
   @ApiPropertyOptional({ required: true, description: '权限ID', default: 1 })
   @IsNotEmpty({ message: '权限ID不能为空' })
+  @IsNumber({}, { message: '权限ID必须是数字' })
   readonly id: number;
 }

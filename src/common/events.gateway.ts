@@ -18,7 +18,7 @@ class EvensGateway {
   private readonly redis: Redis;
 
   constructor(private readonly redisService: RedisService) {
-    this.redis = this.redisService.getClient();
+    this.redis = this.redisService.getOrThrow();
   }
 
   @SubscribeMessage('addSocket')

@@ -65,6 +65,7 @@ export default class UserService {
         cache: true,
         relations: ['role'],
       });
+      console.log('result :>> ', result);
       return {
         total,
         list: result.map((i) => {
@@ -73,6 +74,7 @@ export default class UserService {
         }),
       };
     } catch (error) {
+      console.log('error :>> ', error);
       throw new HttpException(
         { message: error.sqlMessage },
         HttpStatus.BAD_REQUEST,
@@ -147,7 +149,7 @@ export default class UserService {
   async findApiRoutes(): Promise<string[]> {
     try {
       return JSON.parse(getApiRoutesJson());
-    } catch (error) {
+    } catch {
       return [];
     }
   }
@@ -201,7 +203,7 @@ export default class UserService {
   async updataRole(updataRoleDto: UpdataRoleDto): Promise<any> {
     if (!(await this.roleRepository.findOneBy({ id: updataRoleDto.id }))) {
       throw new HttpException(
-        { message: '无此用户，请确认' },
+        { message: '无此权限，请确认' },
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -210,7 +212,7 @@ export default class UserService {
     });
     if (!!Role && Role.id !== updataRoleDto.id) {
       throw new HttpException(
-        { message: '用户名不能重复' },
+        { message: '权限名不能重复' },
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -238,7 +240,7 @@ export default class UserService {
     });
     if (!result) {
       throw new HttpException(
-        { message: '无此用户，请确认' },
+        { message: '无此权限，请确认' },
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -286,8 +288,9 @@ export default class UserService {
           HttpStatus.BAD_REQUEST,
         );
       }
+    } else {
+      throw new HttpException({ message: '查无此人' }, HttpStatus.BAD_REQUEST);
     }
-    return false;
   }
 
   async creatToken(userData): Promise<any> {
@@ -301,7 +304,8 @@ export default class UserService {
       where: { id: tokenDecode['id'] },
       relations: ['role'],
     });
-    const isAuth = user.role.apiRoutes.includes(request.url.split('?')[0]);
+    const apiRoutes: string[] = JSON.parse(user.role.apiRoutes || '[]');
+    const isAuth = apiRoutes.includes(request.url.split('?')[0]);
     if (!isAuth)
       throw new HttpException('您的账号没有此接口权限', HttpStatus.BAD_REQUEST);
 

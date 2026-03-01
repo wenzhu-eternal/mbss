@@ -6,7 +6,7 @@ import {
   PipeTransform,
   Type,
 } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 
 @Injectable()
@@ -17,7 +17,9 @@ export default class ValidationPipe implements PipeTransform<any> {
       return value;
     }
 
-    const object = plainToClass(metatype, value);
+    const object = plainToInstance(metatype, value, {
+      enableImplicitConversion: true,
+    });
     const error = await validate(object);
     if (error.length > 0) {
       const { constraints } = error[0];
