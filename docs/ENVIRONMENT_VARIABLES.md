@@ -298,7 +298,7 @@ REDIS_PASSWORD=your-strong-redis-password
 
 **解决方法**:
 
-- 复制 `.env.production` 为 `.env`
+- 复制 `.env.example` 为 `.env`
 - 修改所有敏感配置
 
 ### 3. 数据库连接失败
@@ -318,7 +318,6 @@ REDIS_PASSWORD=your-strong-redis-password
 ## 📚 相关文档
 
 - [dotenv 官方文档](https://github.com/motdotla/dotenv)
-- [项目优化报告](./OPTIMIZATION_REPORT.md)
 - [快速入门指南](./QUICK_START.md)
 - [项目文档](./PROJECT_DOCUMENTATION.md)
 
@@ -329,8 +328,6 @@ REDIS_PASSWORD=your-strong-redis-password
 - ✅ 添加 `dotenv` 包
 - ✅ 在 `main.ts` 中配置环境变量加载
 - ✅ 创建 `.env.example` 模板文件
-- ✅ 创建 `.env.development` 开发环境配置
-- ✅ 创建 `.env.production` 生产环境配置
 - ✅ 更新 `.gitignore` 忽略环境变量文件
 - ✅ 创建环境变量配置说明文档
 

@@ -319,7 +319,7 @@ EventsGateway 处理连接
 ├── name (角色名称)
 ├── apiRoutes (API路由权限 JSON)
 ├── createTime (创建时间)
-├── updataTime (更新时间)
+├── updateTime (更新时间)
 └── isDisable (是否禁用)
 
 关系: user.roleId -> role.id (N:1)
@@ -429,7 +429,7 @@ EventsGateway 接收连接
     ↓
 建立双向通信
     ↓
-客户端发送 delectSocket 事件
+客户端发送 deleteSocket 事件
     ↓
 清理 Redis 连接信息
     ↓
@@ -722,5 +722,5 @@ src/
 ---
 
 **架构设计文档 v1.0.0**  
-**最后更新**: 2026-03-01  
+**最后更新**: 2026-03-08  
 **架构师**: Development Team

@@ -115,7 +115,7 @@ GET /api/user/findUsers?page=1&pageSize=10
 #### 更新用户
 
 ```http
-POST /api/user/updataUser
+POST /api/user/updateUser
 Content-Type: application/json
 
 {
@@ -131,7 +131,7 @@ Content-Type: application/json
 #### 启用/禁用用户
 
 ```http
-GET /api/user/edUser?id=1
+GET /api/user/toggleUserStatus?id=1
 ```
 
 ### 2. 角色管理
@@ -157,7 +157,7 @@ GET /api/user/findRoles?page=1&pageSize=10
 #### 更新角色
 
 ```http
-POST /api/user/updataRole
+POST /api/user/updateRole
 Content-Type: application/json
 
 {
@@ -170,7 +170,7 @@ Content-Type: application/json
 #### 启用/禁用角色
 
 ```http
-GET /api/user/edRole?id=1
+GET /api/user/toggleRoleStatus?id=1
 ```
 
 ### 3. 认证登录
@@ -417,7 +417,7 @@ npm run test
 | email         | string   | 邮箱         |
 | roleId        | number   | 角色ID       |
 | createTime    | datetime | 创建时间     |
-| updataTime    | datetime | 更新时间     |
+| updateTime    | datetime | 更新时间     |
 | lastLoginTime | datetime | 最后登录时间 |
 | isDisable     | boolean  | 是否禁用     |
 
@@ -429,7 +429,7 @@ npm run test
 | name       | string   | 角色名称              |
 | apiRoutes  | text     | API路由权限(JSON数组) |
 | createTime | datetime | 创建时间              |
-| updataTime | datetime | 更新时间              |
+| updateTime | datetime | 更新时间              |
 | isDisable  | boolean  | 是否禁用              |
 
 ## 🔍 调试技巧
@@ -470,7 +470,6 @@ SELECT * FROM role;
 ## 📚 更多文档
 
 - [完整技术文档](./PROJECT_DOCUMENTATION.md)
-- [依赖升级报告](./DEPENDENCY_UPGRADE_REPORT.md)
 - [NestJS 官方文档](https://docs.nestjs.com/)
 - [TypeORM 官方文档](https://typeorm.io/)
 
@@ -489,4 +488,4 @@ SELECT * FROM role;
 ---
 
 **快速入门指南 v1.0.0**  
-**最后更新**: 2026-03-01
+**最后更新**: 2026-03-08

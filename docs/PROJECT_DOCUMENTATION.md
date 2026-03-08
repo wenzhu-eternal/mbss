@@ -148,26 +148,26 @@ AppModule (根模块)
   apiRoutes: string;       // API路由权限 (JSON数组)
   users: UserEntity[];     // 关联用户
   createTime: Date;        // 创建时间
-  updataTime: Date;        // 更新时间
+  updateTime: Date;        // 更新时间
   isDisable: boolean;       // 是否禁用
 }
 ```
 
 #### API 接口
 
-| 方法          | 路径                    | 描述           | 请求方式 |
-| ------------- | ----------------------- | -------------- | -------- |
-| addUser       | /api/user/addUser       | 添加用户       | POST     |
-| findUsers     | /api/user/findUsers     | 查看所有用户   | GET      |
-| updataUser    | /api/user/updataUser    | 更新用户       | POST     |
-| edUser        | /api/user/edUser        | 启用或禁用用户 | GET      |
-| findApiRoutes | /api/user/findApiRoutes | 查看所有路由   | GET      |
-| addRole       | /api/user/addRole       | 添加权限       | POST     |
-| findRoles     | /api/user/findRoles     | 查看所有权限   | GET      |
-| updataRole    | /api/user/updataRole    | 更新权限       | POST     |
-| edRole        | /api/user/edRole        | 启用或禁用权限 | GET      |
-| login         | /api/user/login         | 登录           | POST     |
-| loginOut      | /api/user/loginOut      | 登出           | GET      |
+| 方法             | 路径                       | 描述           | 请求方式 |
+| ---------------- | -------------------------- | -------------- | -------- |
+| addUser          | /api/user/addUser          | 添加用户       | POST     |
+| findUsers        | /api/user/findUsers        | 查看所有用户   | GET      |
+| updateUser       | /api/user/updateUser       | 更新用户       | POST     |
+| toggleUserStatus | /api/user/toggleUserStatus | 启用或禁用用户 | GET      |
+| findApiRoutes    | /api/user/findApiRoutes    | 查看所有路由   | GET      |
+| addRole          | /api/user/addRole          | 添加权限       | POST     |
+| findRoles        | /api/user/findRoles        | 查看所有权限   | GET      |
+| updateRole       | /api/user/updateRole       | 更新权限       | POST     |
+| toggleRoleStatus | /api/user/toggleRoleStatus | 启用或禁用权限 | GET      |
+| login            | /api/user/login            | 登录           | POST     |
+| loginOut         | /api/user/loginOut         | 登出           | GET      |
 
 #### 权限控制机制
 
@@ -219,7 +219,7 @@ AppModule (根模块)
 | 事件         | 描述     | 数据格式           |
 | ------------ | -------- | ------------------ |
 | addSocket    | 用户连接 | { userId: number } |
-| delectSocket | 用户断开 | { userId: number } |
+| deleteSocket | 用户断开 | { userId: number } |
 
 #### Redis 数据结构
 
@@ -433,7 +433,7 @@ enableImplicitConversion: true; // 启用隐式类型转换
 | name       | string   | 角色名称               | UNIQUE        |
 | apiRoutes  | text     | API路由权限 (JSON数组) |               |
 | createTime | datetime | 创建时间               |               |
-| updataTime | datetime | 更新时间               |               |
+| updateTime | datetime | 更新时间               |               |
 | isDisable  | boolean  | 是否禁用               | DEFAULT false |
 
 ### 关系
@@ -957,6 +957,6 @@ NODE_ENV=production     # 生产环境
 
 ---
 
-**文档版本**: 1.0.0  
-**最后更新**: 2026-03-01  
+**文档版本**: v1.0.0  
+**最后更新**: 2026-03-08  
 **维护者**: Development Team
