@@ -10,7 +10,7 @@ export const apiRoutesFileName = join(
 
 export const createApiRoutesJson = (app) => {
   const ApiRouters = [];
-  const stack = app?.getHttpAdapter()?.getInstance()?._router?.stack || [];
+  const stack = app?.getHttpAdapter()?.getInstance()?.router?.stack || [];
   stack?.forEach((layer) =>
     layer?.route ? ApiRouters.push(layer?.route?.path) : null,
   );

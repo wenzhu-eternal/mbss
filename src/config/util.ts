@@ -52,7 +52,9 @@ export const defineConfig = (config: IDefineConfig) => {
   };
 
   const createProjectDir = join(fileDirName, projectName);
-  if (!fs.existsSync(createProjectDir)) fs.mkdirSync(createProjectDir);
+  if (!fs.existsSync(createProjectDir)) {
+    fs.mkdirSync(createProjectDir, { recursive: true });
+  }
 
   return newConfig;
 };

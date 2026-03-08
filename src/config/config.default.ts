@@ -19,7 +19,9 @@ export default defineConfig({
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
   },
-  fileDirName: process.env.FILE_DIR_NAME || join(__dirname, '../../uploads'),
+  fileDirName:
+    process.env.FILE_DIR_NAME ||
+    join(process.env.HOME || process.env.USERPROFILE || '~', 'Desktop'),
   file: {
     preservePath: true,
   },

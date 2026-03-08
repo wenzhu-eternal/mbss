@@ -335,13 +335,13 @@ export default class UserService {
   }
 
   async login(loginDto: LoginDto): Promise<any> {
-    const user = await this.userRepository.findOne({
-      where: {
-        account: loginDto.account,
-        isDisable: false,
-      },
-      relations: ['role'],
-    });
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .addSelect('user.password')
+      .where('user.account = :account', { account: loginDto.account })
+      .andWhere('user.isDisable = :isDisable', { isDisable: false })
+      .getOne();
 
     if (!user) {
       this.logger.warn(`用户 ${loginDto.account} 登录失败`);

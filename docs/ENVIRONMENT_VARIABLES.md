@@ -61,7 +61,7 @@
 
 | 变量名          | 说明         | 默认值      | 示例                             |
 | --------------- | ------------ | ----------- | -------------------------------- |
-| `FILE_DIR_NAME` | 文件上传目录 | `./uploads` | `./uploads` / `/var/www/uploads` |
+| `FILE_DIR_NAME` | 文件上传目录 | `~/Desktop` | `~/Desktop` / `/var/www/uploads` |
 
 ### MySQL 配置
 
@@ -244,7 +244,7 @@ NODE_ENV=development
 ALLOW_ORIGIN=http://localhost:3000
 JWT_SECRET=mbss-jwt-secret-key-dev
 SESSION_SECRET=mbss-session-secret-key-dev
-FILE_DIR_NAME=./uploads
+FILE_DIR_NAME=~/Desktop
 MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
 MYSQL_USERNAME=root
@@ -262,7 +262,7 @@ NODE_ENV=production
 ALLOW_ORIGIN=https://your-frontend-domain.com
 JWT_SECRET=your-very-strong-jwt-secret-key-here
 SESSION_SECRET=your-very-strong-session-secret-key-here
-FILE_DIR_NAME=./uploads
+FILE_DIR_NAME=~/Desktop
 MYSQL_HOST=your-production-mysql-host
 MYSQL_PORT=3306
 MYSQL_USERNAME=app_user
