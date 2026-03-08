@@ -1,7 +1,7 @@
 {
   "name": "mbss",
-  "version": "0.3.3",
-  "description": "",
+  "version": "1.0.0",
+  "description": "基于 NestJS 的企业级后端服务模板，提供用户管理、文件上传、WebSocket 通信等核心功能，适合作为新项目的基础框架",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

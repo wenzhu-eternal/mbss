@@ -18,11 +18,11 @@ redis-cli --version  # 需要 v6.0+
 ### 安装依赖
 
 ```bash
-# 安装项目依赖
-npm install
-
-# 或使用 pnpm
+# 推荐使用 pnpm（更快的安装速度和更少的磁盘占用）
 pnpm install
+
+# 或使用 npm
+npm install
 ```
 
 ### 配置数据库
@@ -33,29 +33,33 @@ pnpm install
 CREATE DATABASE mbss CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-2. 修改配置文件 `src/config/config.default.ts`:
+2. 配置环境变量 `.env`:
 
-```typescript
-mysql: {
-  type: 'mysql',
-  host: '127.0.0.1',      // 修改为你的数据库地址
-  port: 3306,              // 修改为你的数据库端口
-  username: 'root',        // 修改为你的数据库用户名
-  password: '888888',      // 修改为你的数据库密码
-  database: 'mbss',        // 修改为你的数据库名称
-}
+```bash
+# 复制环境变量模板
+cp .env.example .env
+
+# 编辑 .env 文件，修改数据库配置
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+MYSQL_USERNAME=root
+MYSQL_PASSWORD=your-password
+MYSQL_DATABASE=mbss
 ```
 
 ### 启动服务
 
 ```bash
-# 开发环境
+# 开发环境（推荐使用 pnpm）
+pnpm run dev
+
+# 或使用 npm
 npm run dev
 
 # 生产环境
-npm run dev:prod
-
-# 或先构建再启动
+pnpm run build
+pnpm run dev:prod
+# 或
 npm run build
 npm run dev:prod
 ```
@@ -315,13 +319,48 @@ redis: {
 
 ### 跨域配置
 
-```typescript
-cors: {
-  credentials: true,
-  origin: 'http://localhost:3000',  // 前端地址
-  allowedHeaders: ['Content-Type', 'Accept'],
-}
+```bash
+# 在 .env 文件中配置
+ALLOW_ORIGIN=http://localhost:3000  # 前端地址
 ```
+
+## 🔧 开发命令
+
+```bash
+# 开发环境（带热重载）
+pnpm run dev
+# 或
+npm run dev
+
+# 开发环境（带调试）
+pnpm run dev:debug
+# 或
+npm run dev:debug
+
+# 生产环境
+pnpm run build
+pnpm run dev:prod
+# 或
+npm run build
+npm run dev:prod
+
+# 代码格式化
+pnpm run format
+# 或
+npm run format
+
+# 代码检查
+pnpm run lint
+# 或
+npm run lint
+
+# 运行测试
+pnpm run test
+# 或
+npm run test
+```
+
+> **注意**: 本项目推荐使用 `pnpm` 进行依赖管理和脚本执行，`pnpm` 相比 `npm` 具有更快的安装速度和更少的磁盘空间占用。
 
 ## 🐛 常见问题
 

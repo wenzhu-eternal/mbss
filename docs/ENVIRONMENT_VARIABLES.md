@@ -90,7 +90,12 @@
 ### 开发环境
 
 1. **使用默认配置**:
+
    ```bash
+   # 推荐使用 pnpm
+   pnpm run dev
+
+   # 或使用 npm
    npm run dev
    ```
 
@@ -115,7 +120,13 @@
    ```
 
 2. **构建并运行**:
+
    ```bash
+   # 推荐使用 pnpm
+   pnpm run build
+   pnpm run dev:prod
+
+   # 或使用 npm
    npm run build
    npm run dev:prod
    ```
@@ -143,7 +154,13 @@
    ```
 
 3. **构建并运行**:
+
    ```bash
+   # 推荐使用 pnpm
+   pnpm run build
+   pnpm run dev:prod
+
+   # 或使用 npm
    npm run build
    npm run dev:prod
    ```

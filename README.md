@@ -1,4 +1,5 @@
 # MBSS
+
 基于 NestJS 的后端服务模板项目
 
 ## 📋 项目简介
@@ -26,13 +27,18 @@ $ npx create-mb [name]
 git clone <repository-url>
 cd mbss
 
-# 安装依赖
+# 安装依赖（推荐使用 pnpm）
+pnpm install
+
+# 或使用 npm
 npm install
 
 # 配置环境变量
 cp .env.example .env
 
 # 启动开发服务器
+pnpm run dev
+# 或
 npm run dev
 ```
 
@@ -65,21 +71,34 @@ npm run dev
 
 ```bash
 # 开发环境（带热重载）
+pnpm run dev
+# 或
 npm run dev
 
 # 生产环境
+pnpm run build
+pnpm run dev:prod
+# 或
 npm run build
 npm run dev:prod
 
 # 代码格式化
+pnpm run format
+# 或
 npm run format
 
 # 代码检查
+pnpm run lint
+# 或
 npm run lint
 
 # 运行测试
+pnpm run test
+# 或
 npm run test
 ```
+
+> **注意**: 本项目推荐使用 `pnpm` 进行依赖管理和脚本执行，`pnpm` 相比 `npm` 具有更快的安装速度和更少的磁盘空间占用。
 
 ## 🔐 安全特性
 

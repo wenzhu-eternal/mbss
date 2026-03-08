@@ -941,7 +941,7 @@ NODE_ENV=production     # 生产环境
 
 ### 当前版本
 
-- **项目版本**: 0.3.3
+- **项目版本**: 1.0.0
 - **NestJS**: v11.1.14
 - **TypeScript**: v5.9.3
 - **TypeORM**: v10.0.2

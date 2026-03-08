@@ -19,9 +19,11 @@ cd mbss
 ### 2. 安装依赖
 
 ```bash
-npm install
-# 或
+# 推荐使用 pnpm（更快的安装速度和更少的磁盘占用）
 pnpm install
+
+# 或使用 npm
+npm install
 ```
 
 ### 3. 配置环境变量
@@ -37,6 +39,7 @@ nano .env
 ### 4. 配置数据库
 
 创建 MySQL 数据库：
+
 ```sql
 CREATE DATABASE mbss CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
@@ -44,10 +47,16 @@ CREATE DATABASE mbss CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ### 5. 启动项目
 
 ```bash
-# 开发环境
+# 开发环境（推荐使用 pnpm）
+pnpm run dev
+
+# 或使用 npm
 npm run dev
 
 # 生产环境
+pnpm run build
+pnpm run dev:prod
+# 或
 npm run build
 npm run dev:prod
 ```
@@ -113,6 +122,7 @@ nest g service modules/your-module
 #### 手动创建模块
 
 1. 创建模块目录：
+
 ```
 src/modules/your-module/
 ├── your-module.controller.ts
@@ -139,26 +149,31 @@ export default class AppModule {}
 ### 生产环境必须修改的配置
 
 1. **JWT 密钥**：
+
 ```bash
 JWT_SECRET=your-very-strong-jwt-secret-key-here
 ```
 
 2. **Session 密钥**：
+
 ```bash
 SESSION_SECRET=your-very-strong-session-secret-key-here
 ```
 
 3. **数据库密码**：
+
 ```bash
 MYSQL_PASSWORD=your-strong-mysql-password
 ```
 
 4. **Redis 密钥**（建议）：
+
 ```bash
 REDIS_PASSWORD=your-strong-redis-password
 ```
 
 5. **跨域配置**：
+
 ```bash
 ALLOW_ORIGIN=https://your-frontend-domain.com
 ```
@@ -242,6 +257,7 @@ mbss/
 ### 可扩展功能
 
 根据项目需求，可以添加：
+
 - 邮件发送功能
 - 短信发送功能
 - 日志管理系统
@@ -264,27 +280,44 @@ mbss/
 
 ```bash
 # 开发环境（带热重载）
+pnpm run dev
+# 或
 npm run dev
 
 # 开发环境（带调试）
+pnpm run dev:debug
+# 或
 npm run dev:debug
 
 # 生产环境
+pnpm run build
+pnpm run dev:prod
+# 或
 npm run build
 npm run dev:prod
 
 # 代码格式化
+pnpm run format
+# 或
 npm run format
 
 # 代码检查
+pnpm run lint
+# 或
 npm run lint
 
 # 运行测试
+pnpm run test
+# 或
 npm run test
 
 # 测试覆盖率
+pnpm run test:cov
+# 或
 npm run test:cov
 ```
+
+> **注意**: 本项目推荐使用 `pnpm` 进行依赖管理和脚本执行，`pnpm` 相比 `npm` 具有更快的安装速度和更少的磁盘空间占用。
 
 ## 🚢 部署
 
@@ -297,11 +330,13 @@ npm run dev
 ### 生产环境部署
 
 1. **构建项目**：
+
 ```bash
 npm run build
 ```
 
 2. **配置环境变量**：
+
 ```bash
 # 方式一：通过系统环境变量
 export NODE_ENV=production
@@ -314,6 +349,7 @@ cp .env.example .env
 ```
 
 3. **启动服务**：
+
 ```bash
 npm run dev:prod
 ```
@@ -379,5 +415,5 @@ docker run -p 9000:9000 --env-file .env your-project
 
 ---
 
-**模板版本**: v0.3.3  
+**模板版本**: v1.0.0  
 **最后更新**: 2026-03-08
