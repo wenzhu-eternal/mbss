@@ -307,10 +307,10 @@ EventsGateway 处理连接
 ├── account (账号)
 ├── password (密码)
 ├── phone (电话)
-├── emil (邮箱)
+├── email (邮箱)
 ├── roleId (外键 -> role.id)
 ├── createTime (创建时间)
-├── updataTime (更新时间)
+├── updateTime (更新时间)
 ├── lastLoginTime (最后登录时间)
 └── isDisable (是否禁用)
 

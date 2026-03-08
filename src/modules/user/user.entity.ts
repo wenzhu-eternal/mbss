@@ -18,7 +18,7 @@ export default class UserEntity {
   phone: string;
 
   @Column()
-  emil: string;
+  email: string;
 
   @ManyToOne(() => RoleEntity, (roleEntity) => roleEntity.users)
   role: RoleEntity;
@@ -27,7 +27,7 @@ export default class UserEntity {
   createTime: Date;
 
   @Column({ nullable: true })
-  updataTime: Date;
+  updateTime: Date;
 
   @Column({ nullable: true })
   lastLoginTime: Date;

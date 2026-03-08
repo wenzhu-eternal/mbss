@@ -10,8 +10,9 @@ import { Request, Response } from 'express';
 
 @Catch()
 export default class HttpExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(HttpExceptionFilter.name);
+
   catch(exception: any, host: ArgumentsHost) {
-    console.log('进入全局异常过滤器 :>> ');
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
@@ -22,9 +23,9 @@ export default class HttpExceptionFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
     const message =
       exception.message ||
-      exception.message.message ||
-      exception.message.error ||
-      null;
+      exception.message?.message ||
+      exception.message?.error ||
+      '服务器内部错误';
     const mesLog = {
       statusCode: status,
       timestamp: new Date().toISOString(),
@@ -33,7 +34,10 @@ export default class HttpExceptionFilter implements ExceptionFilter {
       data: message,
     };
 
-    Logger.error('错误信息', JSON.stringify(mesLog), 'HttpExceptionFilter');
+    this.logger.error(
+      `请求失败: ${request.method} ${request.url}`,
+      JSON.stringify(mesLog),
+    );
     response.status(HttpStatus.OK).json(mesLog);
   }
 }

@@ -130,10 +130,10 @@ AppModule (根模块)
   account: string; // 账号
   password: string; // 密码
   phone: string; // 电话
-  emil: string; // 邮箱
+  email: string; // 邮箱
   role: RoleEntity; // 关联角色
   createTime: Date; // 创建时间
-  updataTime: Date; // 更新时间
+  updateTime: Date; // 更新时间
   lastLoginTime: Date; // 最后登录时间
   isDisable: boolean; // 是否禁用
 }
@@ -418,10 +418,10 @@ enableImplicitConversion: true; // 启用隐式类型转换
 | account       | string   | 账号          | UNIQUE        |
 | password      | string   | 密码          | NOT NULL      |
 | phone         | string   | 电话          |               |
-| emil          | string   | 邮箱          |               |
+| email         | string   | 邮箱          |               |
 | roleId        | number   | 角色ID (外键) | FOREIGN KEY   |
 | createTime    | datetime | 创建时间      |               |
-| updataTime    | datetime | 更新时间      |               |
+| updateTime    | datetime | 更新时间      |               |
 | lastLoginTime | datetime | 最后登录时间  |               |
 | isDisable     | boolean  | 是否禁用      | DEFAULT false |
 
@@ -691,6 +691,219 @@ NODE_ENV=production     # 生产环境
 - 联系管理员分配相应权限
 - 检查角色配置是否正确
 - 确认 API 路由是否在角色权限中
+
+## 项目优化记录
+
+### 优化概述
+
+本次优化对项目进行了全面的代码审查和重构，涵盖了安全性、代码质量、性能优化、配置管理等多个方面。
+
+**优化日期**: 2026-03-08
+
+### 优化内容
+
+#### 1. 拼写错误和命名规范修正
+
+**数据库字段命名**:
+
+- `updataTime` → `updateTime` (更新时间字段)
+- `emil` → `email` (邮箱字段)
+
+**DTO 类命名**:
+
+- `UpdataUserDto` → `UpdateUserDto`
+- `UpdataRoleDto` → `UpdateRoleDto`
+- `EDUserDto` → `ToggleUserStatusDto`
+- `EDRoleDto` → `ToggleRoleStatusDto`
+
+**控制器方法命名**:
+
+- `updataUser` → `updateUser`
+- `updataRole` → `updateRole`
+- `edUser` → `toggleUserStatus`
+- `edRole` → `toggleRoleStatus`
+
+**Service 方法命名**:
+
+- `AuthService` → `authService` (方法名)
+
+**WebSocket 事件命名**:
+
+- `EvensGateway` → `EventsGateway` (类名)
+- `delectSocket` → `deleteSocket` (事件名)
+
+#### 2. 日志系统优化
+
+- 移除所有 `console.log` 语句
+- 使用 NestJS `Logger` 统一日志管理
+- 为每个 Service/Guard/Filter 添加私有 Logger 实例
+- 使用适当的日志级别 (log, warn, error)
+
+#### 3. 安全性增强
+
+**密码加密存储**:
+
+- 集成 `bcrypt` 密码加密库
+- 用户创建时自动加密密码
+- 用户更新时支持密码重新加密
+- 登录时使用 `bcrypt.compare` 验证密码
+
+**敏感信息过滤**:
+
+- 查询用户列表时自动过滤密码字段
+- 使用对象解构移除敏感信息
+
+**错误信息优化**:
+
+- 移除 SQL 错误信息直接暴露
+- 统一错误消息格式
+- 避免泄露数据库结构信息
+
+#### 4. 代码质量和规范优化
+
+- 添加 `@IsEmail()` 验证器验证邮箱格式
+- 添加 `@IsOptional()` 装饰器标记可选字段
+- 改进验证错误消息
+- 提取白名单检查逻辑为独立方法
+- 改进变量命名
+- 添加更详细的错误日志
+
+#### 5. 性能优化
+
+- 优化重复查询逻辑
+- 减少不必要的数据库查询
+- 改进查询条件
+- 保持 TypeORM 缓存配置
+
+#### 6. 配置管理优化
+
+- 支持所有配置项通过环境变量覆盖
+- 提供合理的默认值
+- 改进配置类型安全
+- 创建环境变量示例文件 `.env.example`
+- 简化配置合并逻辑，移除 `config.production.ts`
+- 符合12-Factor App安全原则
+
+#### 7. 环境变量配置
+
+- 安装 `dotenv` 包用于环境变量管理
+- 在 `main.ts` 中添加环境变量加载
+- 创建 `.env` 开发环境配置
+- 创建 `.env.production` 生产环境配置
+- 创建 `.env.example` 环境变量模板
+- 更新 `.gitignore` 忽略环境变量文件
+
+### API 变更清单
+
+| 旧接口路径                | 新接口路径                     | 变更类型 |
+| ------------------------- | ------------------------------ | -------- |
+| POST /api/user/updataUser | POST /api/user/updateUser      | 重命名   |
+| GET /api/user/edUser      | GET /api/user/toggleUserStatus | 重命名   |
+| POST /api/user/updataRole | POST /api/user/updateRole      | 重命名   |
+| GET /api/user/edRole      | GET /api/user/toggleRoleStatus | 重命名   |
+
+### 数据字段变更
+
+| 旧字段名   | 新字段名   | 影响范围       |
+| ---------- | ---------- | -------------- |
+| emil       | email      | 用户表、DTO    |
+| updataTime | updateTime | 用户表、角色表 |
+
+### WebSocket 事件变更
+
+| 旧事件名     | 新事件名     | 变更类型 |
+| ------------ | ------------ | -------- |
+| delectSocket | deleteSocket | 重命名   |
+
+### 新增依赖
+
+- `bcrypt`: 密码加密库
+- `@types/bcrypt`: TypeScript 类型定义
+- `dotenv`: 环境变量管理
+
+### 数据库变更
+
+**用户表**:
+
+- 字段 `updataTime` 重命名为 `updateTime`
+- 字段 `emil` 重命名为 `email`
+- 密码字段使用 bcrypt 加密存储
+
+**角色表**:
+
+- 字段 `updataTime` 重命名为 `updateTime`
+- API 路径更新为新的路径
+
+### 向后兼容性
+
+- **不兼容变更**: API 路径和字段名变更需要前端同步更新
+- **兼容变更**: 内部方法重命名不影响外部调用
+
+### 部署注意事项
+
+1. **数据库迁移**:
+
+   ```sql
+   ALTER TABLE `user` CHANGE COLUMN `updataTime` `updateTime` DATETIME;
+   ALTER TABLE `user` CHANGE COLUMN `emil` `email` VARCHAR(255);
+   ALTER TABLE `role` CHANGE COLUMN `updataTime` `updateTime` DATETIME;
+   ```
+
+2. **密码迁移**:
+   - 现有用户密码已使用 bcrypt 加密
+   - 新用户创建时自动加密密码
+   - 登录时使用 `bcrypt.compare` 验证密码
+
+3. **环境变量配置**:
+
+   **开发环境**:
+
+   ```bash
+   # 使用 .env 文件
+   npm run dev
+   ```
+
+   **生产环境（推荐方式）**:
+
+   ```bash
+   # 通过系统环境变量或 CI/CD 注入
+   export NODE_ENV=production
+   export JWT_SECRET=your-production-jwt-secret
+   export SESSION_SECRET=your-production-session-secret
+   export MYSQL_HOST=your-mysql-host
+   export MYSQL_PASSWORD=your-mysql-password
+   export REDIS_HOST=your-redis-host
+   export REDIS_PASSWORD=your-redis-password
+   export ALLOW_ORIGIN=https://your-frontend-domain.com
+
+   npm run build
+   npm run dev:prod
+   ```
+
+   **生产环境（备选方式）**:
+
+   ```bash
+   # 复制模板文件
+   cp .env.example .env
+
+   # 修改 .env 文件中的配置
+   # - NODE_ENV=production
+   # - JWT_SECRET (必须修改为强密码)
+   # - SESSION_SECRET (必须修改为强密码)
+   # - MYSQL_PASSWORD (必须修改)
+   # - REDIS_PASSWORD (建议修改)
+   # - ALLOW_ORIGIN (修改为实际的前端域名)
+   # - MYSQL_HOST (修改为实际的数据库地址)
+   # - REDIS_HOST (修改为实际的 Redis 地址)
+
+   npm run build
+   npm run dev:prod
+   ```
+
+4. **前端适配**:
+   - 更新 API 路径
+   - 更新请求/响应字段名
+   - 更新 WebSocket 事件名
 
 ## 技术亮点
 

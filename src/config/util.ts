@@ -7,8 +7,6 @@ import { diskStorage } from 'multer';
 import { join } from 'path';
 import * as fs from 'fs';
 
-import production from './config.production';
-
 export interface IDefineConfig {
   projectName?: string;
   allowOrigin?: string | string[];
@@ -21,31 +19,11 @@ export interface IDefineConfig {
   redis?: RedisModuleOptions;
 }
 
-function mergeObjects(obj1, obj2) {
-  const merged = { ...obj1 };
-
-  for (const key in obj2) {
-    if (typeof obj1[key] === 'object' || typeof obj2[key] === 'object') {
-      merged[key] = mergeObjects(obj1[key], obj2[key]);
-    } else {
-      merged[key] = obj2[key];
-    }
-  }
-
-  return merged;
-}
-
 export const defineConfig = (config: IDefineConfig) => {
-  let newConfig: IDefineConfig =
-    process.env.NODE_ENV === 'development'
-      ? config
-      : mergeObjects(config, production);
+  const { fileDirName, projectName, jwtSecret, session, file, mysql } = config;
 
-  const { fileDirName, projectName, jwtSecret, session, file, mysql } =
-    newConfig;
-
-  newConfig = {
-    ...newConfig,
+  const newConfig: IDefineConfig = {
+    ...config,
     jwtSecret: {
       ...jwtSecret,
       secret: jwtSecret.secret || projectName,

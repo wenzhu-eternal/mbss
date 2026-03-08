@@ -8,6 +8,12 @@ package-lock.json
 yarn.lock
 mbci.config.js
 
+# Environment variables
+.env
+
+# Cookies
+cookies.txt
+
 # Logs
 logs
 *.log

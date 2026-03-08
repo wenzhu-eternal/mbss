@@ -14,8 +14,9 @@ import { Socket } from 'socket.io';
 @WebSocketGateway({
   cors: { origin: config.allowOrigin },
 })
-class EvensGateway {
+class EventsGateway {
   private readonly redis: Redis;
+  private readonly logger = new Logger(EventsGateway.name);
 
   constructor(private readonly redisService: RedisService) {
     this.redis = this.redisService.getOrThrow();
@@ -27,10 +28,12 @@ class EvensGateway {
     @MessageBody() { userId }: { userId: number },
   ): void {
     if (userId) {
-      this.redis.hset('socket', {
-        [userId]: JSON.stringify({ socketId: id }),
-      });
-      Logger.log(
+      this.redis.hset(
+        'socket',
+        String(userId),
+        JSON.stringify({ socketId: id }),
+      );
+      this.logger.log(
         `[${dayjs().format(
           'YYYY-MM-DD HH:mm:ss',
         )}] ID为${userId}用户进行socket连接`,
@@ -38,11 +41,11 @@ class EvensGateway {
     }
   }
 
-  @SubscribeMessage('delectSocket')
-  onDelectSocket(_, @MessageBody() { userId }: { userId: number }): void {
+  @SubscribeMessage('deleteSocket')
+  onDeleteSocket(_, @MessageBody() { userId }: { userId: number }): void {
     if (userId) {
       this.redis.hdel('socket', String(userId));
-      Logger.log(
+      this.logger.log(
         `[${dayjs().format(
           'YYYY-MM-DD HH:mm:ss',
         )}] ID为${userId}用户断开socket连接`,
@@ -52,6 +55,6 @@ class EvensGateway {
 }
 
 @Module({
-  providers: [EvensGateway],
+  providers: [EventsGateway],
 })
 export default class EventsModule {}

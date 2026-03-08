@@ -21,7 +21,7 @@ export default class RoleEntity {
   createTime: Date;
 
   @Column({ nullable: true })
-  updataTime: Date;
+  updateTime: Date;
 
   @Column({ comment: '禁用', default: false })
   isDisable: boolean;

@@ -2,6 +2,7 @@ import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as dotenv from 'dotenv';
 import AppModule from '@/app.module';
 import config from '@/config/config.default';
 import HttpExceptionFilter from '@/common/http-exception.filter';
@@ -11,6 +12,8 @@ import LoggerGlobal from '@/common/logger.middleware';
 import AuthGuard from '@/common/auth.guard';
 import { createApiRoutesJson } from '@/common/apiRoutes';
 import UserService from '@/modules/user/user.service';
+
+dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

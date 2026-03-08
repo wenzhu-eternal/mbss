@@ -28,11 +28,13 @@ pnpm install
 ### 配置数据库
 
 1. 创建 MySQL 数据库:
+
 ```sql
 CREATE DATABASE mbss CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 2. 修改配置文件 `src/config/config.default.ts`:
+
 ```typescript
 mysql: {
   type: 'mysql',
@@ -76,7 +78,7 @@ POST http://localhost:9000/api/user/addUser
   "account": "admin",
   "password": "admin123",
   "phone": "13800138000",
-  "emil": "admin@example.com",
+  "email": "admin@example.com",
   "role": 1
 }
 ```
@@ -86,6 +88,7 @@ POST http://localhost:9000/api/user/addUser
 ### 1. 用户管理
 
 #### 添加用户
+
 ```http
 POST /api/user/addUser
 Content-Type: application/json
@@ -94,17 +97,19 @@ Content-Type: application/json
   "account": "testuser",
   "password": "password123",
   "phone": "13900139000",
-  "emil": "test@example.com",
+  "email": "test@example.com",
   "role": 1
 }
 ```
 
 #### 查询用户列表
+
 ```http
 GET /api/user/findUsers?page=1&pageSize=10
 ```
 
 #### 更新用户
+
 ```http
 POST /api/user/updataUser
 Content-Type: application/json
@@ -114,12 +119,13 @@ Content-Type: application/json
   "account": "testuser",
   "password": "newpassword",
   "phone": "13900139000",
-  "emil": "test@example.com",
+  "email": "test@example.com",
   "role": 1
 }
 ```
 
 #### 启用/禁用用户
+
 ```http
 GET /api/user/edUser?id=1
 ```
@@ -127,6 +133,7 @@ GET /api/user/edUser?id=1
 ### 2. 角色管理
 
 #### 添加角色
+
 ```http
 POST /api/user/addRole
 Content-Type: application/json
@@ -138,11 +145,13 @@ Content-Type: application/json
 ```
 
 #### 查询角色列表
+
 ```http
 GET /api/user/findRoles?page=1&pageSize=10
 ```
 
 #### 更新角色
+
 ```http
 POST /api/user/updataRole
 Content-Type: application/json
@@ -155,6 +164,7 @@ Content-Type: application/json
 ```
 
 #### 启用/禁用角色
+
 ```http
 GET /api/user/edRole?id=1
 ```
@@ -162,6 +172,7 @@ GET /api/user/edRole?id=1
 ### 3. 认证登录
 
 #### 用户登录
+
 ```http
 POST /api/user/login
 Content-Type: application/json
@@ -173,6 +184,7 @@ Content-Type: application/json
 ```
 
 #### 用户登出
+
 ```http
 GET /api/user/loginOut
 ```
@@ -180,6 +192,7 @@ GET /api/user/loginOut
 ### 4. 文件上传
 
 #### 上传文件
+
 ```http
 POST /api/file/upload
 Content-Type: multipart/form-data
@@ -192,6 +205,7 @@ file: [选择文件]
 ### 白名单路由
 
 以下路由无需认证即可访问：
+
 - `/api/user/login` - 用户登录
 - `/api/user/loginOut` - 用户登出
 - `/api/file/upload` - 文件上传
@@ -206,6 +220,7 @@ file: [选择文件]
 ### Token 使用
 
 登录成功后，Token 会自动存储在 Cookie 中：
+
 - Cookie 名称: `token`
 - 有效期: 7 天
 - 存储: HttpOnly Cookie
@@ -315,6 +330,7 @@ cors: {
 **错误**: `connect ECONNREFUSED ::1:3306`
 
 **解决**:
+
 1. 检查 MySQL 服务是否启动
 2. 确认配置中的数据库地址和端口
 3. 尝试使用 `127.0.0.1` 代替 `localhost`
@@ -324,6 +340,7 @@ cors: {
 **错误**: Redis 连接超时
 
 **解决**:
+
 1. 检查 Redis 服务是否启动
 2. 确认 Redis 配置正确
 3. 检查防火墙设置
@@ -333,6 +350,7 @@ cors: {
 **错误**: `没有授权，请先登录`
 
 **解决**:
+
 1. 确保已登录并获取 Token
 2. 检查 Token 是否过期（7天有效期）
 3. 清除浏览器 Cookie 重新登录
@@ -342,6 +360,7 @@ cors: {
 **错误**: `您的账号没有此接口权限`
 
 **解决**:
+
 1. 检查用户角色的 `apiRoutes` 配置
 2. 确认当前请求路径在权限列表中
 3. 联系管理员分配相应权限
@@ -350,35 +369,36 @@ cors: {
 
 ### 用户表 (user)
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| id | number | 主键 |
-| account | string | 账号 |
-| password | string | 密码 |
-| phone | string | 电话 |
-| emil | string | 邮箱 |
-| roleId | number | 角色ID |
-| createTime | datetime | 创建时间 |
-| updataTime | datetime | 更新时间 |
+| 字段          | 类型     | 说明         |
+| ------------- | -------- | ------------ |
+| id            | number   | 主键         |
+| account       | string   | 账号         |
+| password      | string   | 密码         |
+| phone         | string   | 电话         |
+| email         | string   | 邮箱         |
+| roleId        | number   | 角色ID       |
+| createTime    | datetime | 创建时间     |
+| updataTime    | datetime | 更新时间     |
 | lastLoginTime | datetime | 最后登录时间 |
-| isDisable | boolean | 是否禁用 |
+| isDisable     | boolean  | 是否禁用     |
 
 ### 角色表 (role)
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| id | number | 主键 |
-| name | string | 角色名称 |
-| apiRoutes | text | API路由权限(JSON数组) |
-| createTime | datetime | 创建时间 |
-| updataTime | datetime | 更新时间 |
-| isDisable | boolean | 是否禁用 |
+| 字段       | 类型     | 说明                  |
+| ---------- | -------- | --------------------- |
+| id         | number   | 主键                  |
+| name       | string   | 角色名称              |
+| apiRoutes  | text     | API路由权限(JSON数组) |
+| createTime | datetime | 创建时间              |
+| updataTime | datetime | 更新时间              |
+| isDisable  | boolean  | 是否禁用              |
 
 ## 🔍 调试技巧
 
 ### 查看日志
 
 应用启动后会显示详细的日志信息：
+
 - 路由映射日志
 - 数据库连接日志
 - SQL 查询日志

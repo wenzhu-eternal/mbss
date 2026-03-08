@@ -4,13 +4,13 @@ import { Response } from 'express';
 import {
   AddRoleDto,
   AddUserDto,
-  EDRoleDto,
-  EDUserDto,
+  ToggleRoleStatusDto,
+  ToggleUserStatusDto,
   GetRolesDto,
   GetUsersDto,
   LoginDto,
-  UpdataRoleDto,
-  UpdataUserDto,
+  UpdateRoleDto,
+  UpdateUserDto,
 } from './user.dto';
 import UserService from './user.service';
 
@@ -32,15 +32,17 @@ export default class UserController {
   }
 
   @ApiOperation({ summary: '更新用户' })
-  @Post('updataUser')
-  async updataUser(@Body() updataUserDto: UpdataUserDto): Promise<any> {
-    return this.userService.updataUser(updataUserDto);
+  @Post('updateUser')
+  async updateUser(@Body() updateUserDto: UpdateUserDto): Promise<any> {
+    return this.userService.updateUser(updateUserDto);
   }
 
   @ApiOperation({ summary: '启用或禁用用户' })
-  @Get('edUser')
-  async edUser(@Query() edUsersDto: EDUserDto): Promise<any> {
-    return this.userService.edUser(edUsersDto);
+  @Get('toggleUserStatus')
+  async toggleUserStatus(
+    @Query() toggleUserStatusDto: ToggleUserStatusDto,
+  ): Promise<any> {
+    return this.userService.toggleUserStatus(toggleUserStatusDto);
   }
 
   @ApiOperation({ summary: '查看所有路由' })
@@ -62,15 +64,17 @@ export default class UserController {
   }
 
   @ApiOperation({ summary: '更新权限' })
-  @Post('updataRole')
-  async updataRole(@Body() updataRoleDto: UpdataRoleDto): Promise<any> {
-    return this.userService.updataRole(updataRoleDto);
+  @Post('updateRole')
+  async updateRole(@Body() updateRoleDto: UpdateRoleDto): Promise<any> {
+    return this.userService.updateRole(updateRoleDto);
   }
 
   @ApiOperation({ summary: '启用或禁用权限' })
-  @Get('edRole')
-  async edRole(@Query() edRolesDto: EDRoleDto): Promise<any> {
-    return this.userService.edRole(edRolesDto);
+  @Get('toggleRoleStatus')
+  async toggleRoleStatus(
+    @Query() toggleRoleStatusDto: ToggleRoleStatusDto,
+  ): Promise<any> {
+    return this.userService.toggleRoleStatus(toggleRoleStatusDto);
   }
 
   @ApiOperation({ summary: '登录' })
