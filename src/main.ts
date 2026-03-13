@@ -1,16 +1,17 @@
-import * as cookieParser from 'cookie-parser';
-import * as session from 'express-session';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
+import * as session from 'express-session';
+
 import AppModule from '@/app.module';
-import config from '@/config/config.default';
+import { createApiRoutesJson } from '@/common/apiRoutes';
+import AuthGuard from '@/common/auth.guard';
 import HttpExceptionFilter from '@/common/http-exception.filter';
+import LoggerGlobal from '@/common/logger.middleware';
 import ResponseInterceptor from '@/common/response.interceptor';
 import ValidationPipe from '@/common/validation.pipe';
-import LoggerGlobal from '@/common/logger.middleware';
-import AuthGuard from '@/common/auth.guard';
-import { createApiRoutesJson } from '@/common/apiRoutes';
+import config from '@/config/config.default';
 import UserService from '@/modules/user/user.service';
 
 dotenv.config();
@@ -49,4 +50,5 @@ async function bootstrap() {
 
   createApiRoutesJson(app);
 }
-bootstrap();
+
+void bootstrap();

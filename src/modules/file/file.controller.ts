@@ -1,15 +1,11 @@
-import {
-  Controller,
-  Post,
-  Req,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
-import config from '@/config/config.default';
+import { Controller, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { join } from 'path';
+
+import config from '@/config/config.default';
+
 import { FileUploadDto } from './file.dto';
 
 @ApiTags('文件')

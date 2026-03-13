@@ -1,11 +1,11 @@
-import { MulterModuleOptions } from '@nestjs/platform-express';
 import { RedisModuleOptions } from '@liaoliaots/nestjs-redis';
+import { JwtModuleOptions } from '@nestjs/jwt';
+import { MulterModuleOptions } from '@nestjs/platform-express';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SessionOptions } from 'express-session';
-import { JwtModuleOptions } from '@nestjs/jwt';
+import * as fs from 'fs';
 import { diskStorage } from 'multer';
 import { join } from 'path';
-import * as fs from 'fs';
 
 export interface IDefineConfig {
   projectName?: string;

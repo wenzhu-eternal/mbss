@@ -1,4 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
 import RoleEntity from './role.entity';
 
 @Entity({ name: 'user' })
@@ -20,7 +21,7 @@ export default class UserEntity {
   @Column()
   email: string;
 
-  @ManyToOne(() => RoleEntity, (roleEntity) => roleEntity.users)
+  @ManyToOne(() => RoleEntity, roleEntity => roleEntity.users)
   role: RoleEntity;
 
   @Column({ readonly: true })

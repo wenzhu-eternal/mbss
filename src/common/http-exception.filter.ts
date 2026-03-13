@@ -18,9 +18,7 @@ export default class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
 
     const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     const message =
       exception.message ||
       exception.message?.message ||
@@ -34,10 +32,7 @@ export default class HttpExceptionFilter implements ExceptionFilter {
       data: message,
     };
 
-    this.logger.error(
-      `请求失败: ${request.method} ${request.url}`,
-      JSON.stringify(mesLog),
-    );
+    this.logger.error(`请求失败: ${request.method} ${request.url}`, JSON.stringify(mesLog));
     response.status(HttpStatus.OK).json(mesLog);
   }
 }

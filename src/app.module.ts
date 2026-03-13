@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import OConfigModule from '@/config/config.module';
+
 import EventsModule from '@/common/events.gateway';
+import OConfigModule from '@/config/config.module';
 import Modules from '@/modules/index.module';
 
 @Module({

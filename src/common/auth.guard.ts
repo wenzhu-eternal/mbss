@@ -1,10 +1,6 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
 import config from '@config/config.default';
+import { CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/common';
+
 import UserService from '@/modules/user/user.service';
 
 @Injectable()
@@ -28,8 +24,6 @@ export default class AuthGuard implements CanActivate {
   private readonly urlList: string[] = config.routerWhitelist;
 
   private isWhitelisted(url: string): boolean {
-    return this.urlList.some((whitelistUrl) =>
-      url.startsWith(`/api/${whitelistUrl}`),
-    );
+    return this.urlList.some(whitelistUrl => url.startsWith(`/api/${whitelistUrl}`));
   }
 }

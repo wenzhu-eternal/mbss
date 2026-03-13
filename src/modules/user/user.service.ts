@@ -1,22 +1,24 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
+
 import { getApiRoutesJson } from '@/common/apiRoutes';
+
+import RoleEntity from './role.entity';
 import {
   AddRoleDto,
   AddUserDto,
-  ToggleRoleStatusDto,
-  ToggleUserStatusDto,
   GetRolesDto,
   GetUsersDto,
   LoginDto,
+  ToggleRoleStatusDto,
+  ToggleUserStatusDto,
   UpdateRoleDto,
   UpdateUserDto,
 } from './user.dto';
 import UserEntity from './user.entity';
-import RoleEntity from './role.entity';
 
 @Injectable()
 export default class UserService {
@@ -37,10 +39,7 @@ export default class UserService {
     });
     if (existingUser) {
       this.logger.warn(`用户名 ${addUserDto.account} 已存在`);
-      throw new HttpException(
-        { message: '用户名不能重复' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '用户名不能重复' }, HttpStatus.BAD_REQUEST);
     }
 
     const role = await this.roleRepository.findOneBy({
@@ -48,17 +47,11 @@ export default class UserService {
     });
     if (!role) {
       this.logger.warn(`角色 ID ${addUserDto.role} 不存在`);
-      throw new HttpException(
-        { message: '角色不存在' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '角色不存在' }, HttpStatus.BAD_REQUEST);
     }
 
     try {
-      const hashedPassword = await bcrypt.hash(
-        addUserDto.password,
-        this.SALT_ROUNDS,
-      );
+      const hashedPassword = await bcrypt.hash(addUserDto.password, this.SALT_ROUNDS);
       await this.userRepository.save({
         ...addUserDto,
         password: hashedPassword,
@@ -69,10 +62,7 @@ export default class UserService {
       return true;
     } catch (error) {
       this.logger.error(`创建用户失败: ${error.message}`);
-      throw new HttpException(
-        { message: '创建用户失败' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '创建用户失败' }, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -93,10 +83,7 @@ export default class UserService {
       };
     } catch (error) {
       this.logger.error(`查询用户列表失败: ${error.message}`);
-      throw new HttpException(
-        { message: '查询用户列表失败' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '查询用户列表失败' }, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -106,10 +93,7 @@ export default class UserService {
     });
     if (!existingUser) {
       this.logger.warn(`用户 ID ${updateUserDto.id} 不存在`);
-      throw new HttpException(
-        { message: '无此用户，请确认' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '无此用户，请确认' }, HttpStatus.BAD_REQUEST);
     }
 
     const duplicateUser = await this.userRepository.findOne({
@@ -117,10 +101,7 @@ export default class UserService {
     });
     if (duplicateUser && duplicateUser.id !== updateUserDto.id) {
       this.logger.warn(`用户名 ${updateUserDto.account} 已被其他用户使用`);
-      throw new HttpException(
-        { message: '用户名不能重复' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '用户名不能重复' }, HttpStatus.BAD_REQUEST);
     }
 
     const role = await this.roleRepository.findOneBy({
@@ -128,10 +109,7 @@ export default class UserService {
     });
     if (!role) {
       this.logger.warn(`角色 ID ${updateUserDto.role} 不存在`);
-      throw new HttpException(
-        { message: '角色不存在' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '角色不存在' }, HttpStatus.BAD_REQUEST);
     }
 
     try {
@@ -142,10 +120,7 @@ export default class UserService {
       };
 
       if (updateUserDto.password) {
-        updateData.password = await bcrypt.hash(
-          updateUserDto.password,
-          this.SALT_ROUNDS,
-        );
+        updateData.password = await bcrypt.hash(updateUserDto.password, this.SALT_ROUNDS);
       } else {
         delete updateData.password;
       }
@@ -155,25 +130,17 @@ export default class UserService {
       return true;
     } catch (error) {
       this.logger.error(`更新用户失败: ${error.message}`);
-      throw new HttpException(
-        { message: '更新用户失败' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '更新用户失败' }, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async toggleUserStatus(
-    toggleUserStatusDto: ToggleUserStatusDto,
-  ): Promise<boolean> {
+  async toggleUserStatus(toggleUserStatusDto: ToggleUserStatusDto): Promise<boolean> {
     const user = await this.userRepository.findOne({
       where: { id: toggleUserStatusDto.id },
     });
     if (!user) {
       this.logger.warn(`用户 ID ${toggleUserStatusDto.id} 不存在`);
-      throw new HttpException(
-        { message: '无此用户，请确认' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '无此用户，请确认' }, HttpStatus.BAD_REQUEST);
     }
 
     try {
@@ -184,16 +151,11 @@ export default class UserService {
           updateTime: new Date(),
         },
       );
-      this.logger.log(
-        `用户 ID ${toggleUserStatusDto.id} 状态已切换为 ${!user.isDisable}`,
-      );
+      this.logger.log(`用户 ID ${toggleUserStatusDto.id} 状态已切换为 ${!user.isDisable}`);
       return true;
     } catch (error) {
       this.logger.error(`切换用户状态失败: ${error.message}`);
-      throw new HttpException(
-        { message: '切换用户状态失败' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '切换用户状态失败' }, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -211,10 +173,7 @@ export default class UserService {
     });
     if (existingRole) {
       this.logger.warn(`角色名 ${addRoleDto.name} 已存在`);
-      throw new HttpException(
-        { message: '权限名不能重复' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '权限名不能重复' }, HttpStatus.BAD_REQUEST);
     }
 
     try {
@@ -227,10 +186,7 @@ export default class UserService {
       return true;
     } catch (error) {
       this.logger.error(`创建角色失败: ${error.message}`);
-      throw new HttpException(
-        { message: '创建角色失败' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '创建角色失败' }, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -249,10 +205,7 @@ export default class UserService {
       };
     } catch (error) {
       this.logger.error(`查询角色列表失败: ${error.message}`);
-      throw new HttpException(
-        { message: '查询角色列表失败' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '查询角色列表失败' }, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -262,10 +215,7 @@ export default class UserService {
     });
     if (!existingRole) {
       this.logger.warn(`角色 ID ${updateRoleDto.id} 不存在`);
-      throw new HttpException(
-        { message: '无此权限，请确认' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '无此权限，请确认' }, HttpStatus.BAD_REQUEST);
     }
 
     const duplicateRole = await this.roleRepository.findOne({
@@ -273,10 +223,7 @@ export default class UserService {
     });
     if (duplicateRole && duplicateRole.id !== updateRoleDto.id) {
       this.logger.warn(`角色名 ${updateRoleDto.name} 已被其他角色使用`);
-      throw new HttpException(
-        { message: '权限名不能重复' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '权限名不能重复' }, HttpStatus.BAD_REQUEST);
     }
 
     try {
@@ -292,25 +239,17 @@ export default class UserService {
       return true;
     } catch (error) {
       this.logger.error(`更新角色失败: ${error.message}`);
-      throw new HttpException(
-        { message: '更新角色失败' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '更新角色失败' }, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async toggleRoleStatus(
-    toggleRoleStatusDto: ToggleRoleStatusDto,
-  ): Promise<boolean> {
+  async toggleRoleStatus(toggleRoleStatusDto: ToggleRoleStatusDto): Promise<boolean> {
     const role = await this.roleRepository.findOne({
       where: { id: toggleRoleStatusDto.id },
     });
     if (!role) {
       this.logger.warn(`角色 ID ${toggleRoleStatusDto.id} 不存在`);
-      throw new HttpException(
-        { message: '无此权限，请确认' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '无此权限，请确认' }, HttpStatus.BAD_REQUEST);
     }
 
     try {
@@ -321,16 +260,11 @@ export default class UserService {
           updateTime: new Date(),
         },
       );
-      this.logger.log(
-        `角色 ID ${toggleRoleStatusDto.id} 状态已切换为 ${!role.isDisable}`,
-      );
+      this.logger.log(`角色 ID ${toggleRoleStatusDto.id} 状态已切换为 ${!role.isDisable}`);
       return true;
     } catch (error) {
       this.logger.error(`切换角色状态失败: ${error.message}`);
-      throw new HttpException(
-        { message: '切换角色状态失败' },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException({ message: '切换角色状态失败' }, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -348,10 +282,7 @@ export default class UserService {
       throw new HttpException({ message: '查无此人' }, HttpStatus.BAD_REQUEST);
     }
 
-    const isPasswordValid = await bcrypt.compare(
-      loginDto.password,
-      user.password,
-    );
+    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
     if (!isPasswordValid) {
       this.logger.warn(`用户 ${loginDto.account} 密码错误`);
       throw new HttpException({ message: '密码错误' }, HttpStatus.BAD_REQUEST);
@@ -400,7 +331,7 @@ export default class UserService {
       throw new HttpException('您的账号没有此接口权限', HttpStatus.BAD_REQUEST);
     }
 
-    const session = request.session;
+    const { session } = request;
     const currentTime = new Date().getTime() / 1000;
 
     if (token === session.user && currentTime < tokenDecode['exp']) {

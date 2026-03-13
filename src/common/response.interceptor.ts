@@ -1,10 +1,4 @@
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-  Logger,
-} from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 
 @Injectable()
@@ -21,14 +15,14 @@ export default class ResponseInterceptor implements NestInterceptor {
     this.logger.log('进入全局响应拦截器 :>> ');
 
     return next.handle().pipe(
-      map((data) => {
+      map(data => {
         this.logger.log('全局响应拦截器方法返回内容后 :>> ');
         return {
           statusCode: 0,
           timestamp: new Date().toISOString(),
           path: request.url,
           message: '请求成功',
-          data: data,
+          data,
         };
       }),
     );

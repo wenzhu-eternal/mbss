@@ -19,8 +19,7 @@ import { resolve } from 'path';
       inject: [ConfigService],
     }),
     JwtModule.registerAsync({
-      useFactory: (config: ConfigService) =>
-        config.get('config.default').jwtSecret,
+      useFactory: (config: ConfigService) => config.get('config.default').jwtSecret,
       inject: [ConfigService],
     }),
     MulterModule.registerAsync({

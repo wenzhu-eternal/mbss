@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsEmail, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class LoginDto {
   @ApiPropertyOptional({
@@ -21,7 +21,11 @@ export class LoginDto {
 }
 
 export class AddUserDto extends LoginDto {
-  @ApiPropertyOptional({ required: true, description: '电话', default: '110' })
+  @ApiPropertyOptional({
+    required: true,
+    description: '电话',
+    default: '110',
+  })
   @IsOptional()
   readonly phone: string;
 
@@ -43,26 +47,42 @@ export class AddUserDto extends LoginDto {
 }
 
 export class GetUsersDto {
-  @ApiPropertyOptional({ required: true, description: '页码', default: 1 })
+  @ApiPropertyOptional({
+    required: true,
+    description: '页码',
+    default: 1,
+  })
   @IsNumber({}, { message: '页码必须是数字' })
   @Type(() => Number)
   readonly page: number;
 
-  @ApiPropertyOptional({ required: true, description: '单页数量', default: 10 })
+  @ApiPropertyOptional({
+    required: true,
+    description: '单页数量',
+    default: 10,
+  })
   @IsNumber({}, { message: '单页数量必须是数字' })
   @Type(() => Number)
   readonly pageSize: number;
 }
 
 export class UpdateUserDto extends AddUserDto {
-  @ApiPropertyOptional({ required: true, description: '用户ID', default: 1 })
+  @ApiPropertyOptional({
+    required: true,
+    description: '用户ID',
+    default: 1,
+  })
   @IsNotEmpty({ message: '用户ID不能为空' })
   @IsNumber({}, { message: '用户ID必须是数字' })
   readonly id: number;
 }
 
 export class ToggleUserStatusDto {
-  @ApiPropertyOptional({ required: true, description: '用户ID', default: 1 })
+  @ApiPropertyOptional({
+    required: true,
+    description: '用户ID',
+    default: 1,
+  })
   @IsNotEmpty({ message: '用户ID不能为空' })
   @IsNumber({}, { message: '用户ID必须是数字' })
   readonly id: number;
@@ -86,26 +106,42 @@ export class AddRoleDto {
 }
 
 export class GetRolesDto {
-  @ApiPropertyOptional({ required: true, description: '页码', default: 1 })
+  @ApiPropertyOptional({
+    required: true,
+    description: '页码',
+    default: 1,
+  })
   @IsNumber({}, { message: '页码必须是数字' })
   @Type(() => Number)
   readonly page: number;
 
-  @ApiPropertyOptional({ required: true, description: '单页数量', default: 10 })
+  @ApiPropertyOptional({
+    required: true,
+    description: '单页数量',
+    default: 10,
+  })
   @IsNumber({}, { message: '单页数量必须是数字' })
   @Type(() => Number)
   readonly pageSize: number;
 }
 
 export class UpdateRoleDto extends AddRoleDto {
-  @ApiPropertyOptional({ required: true, description: '权限ID', default: 1 })
+  @ApiPropertyOptional({
+    required: true,
+    description: '权限ID',
+    default: 1,
+  })
   @IsNotEmpty({ message: '权限ID不能为空' })
   @IsNumber({}, { message: '权限ID必须是数字' })
   readonly id: number;
 }
 
 export class ToggleRoleStatusDto {
-  @ApiPropertyOptional({ required: true, description: '权限ID', default: 1 })
+  @ApiPropertyOptional({
+    required: true,
+    description: '权限ID',
+    default: 1,
+  })
   @IsNotEmpty({ message: '权限ID不能为空' })
   @IsNumber({}, { message: '权限ID必须是数字' })
   readonly id: number;

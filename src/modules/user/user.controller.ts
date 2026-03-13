@@ -1,14 +1,15 @@
 import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+
 import {
   AddRoleDto,
   AddUserDto,
-  ToggleRoleStatusDto,
-  ToggleUserStatusDto,
   GetRolesDto,
   GetUsersDto,
   LoginDto,
+  ToggleRoleStatusDto,
+  ToggleUserStatusDto,
   UpdateRoleDto,
   UpdateUserDto,
 } from './user.dto';
@@ -39,9 +40,7 @@ export default class UserController {
 
   @ApiOperation({ summary: '启用或禁用用户' })
   @Get('toggleUserStatus')
-  async toggleUserStatus(
-    @Query() toggleUserStatusDto: ToggleUserStatusDto,
-  ): Promise<any> {
+  async toggleUserStatus(@Query() toggleUserStatusDto: ToggleUserStatusDto): Promise<any> {
     return this.userService.toggleUserStatus(toggleUserStatusDto);
   }
 
@@ -71,19 +70,13 @@ export default class UserController {
 
   @ApiOperation({ summary: '启用或禁用权限' })
   @Get('toggleRoleStatus')
-  async toggleRoleStatus(
-    @Query() toggleRoleStatusDto: ToggleRoleStatusDto,
-  ): Promise<any> {
+  async toggleRoleStatus(@Query() toggleRoleStatusDto: ToggleRoleStatusDto): Promise<any> {
     return this.userService.toggleRoleStatus(toggleRoleStatusDto);
   }
 
   @ApiOperation({ summary: '登录' })
   @Post('login')
-  async login(
-    @Req() request,
-    @Res() response: Response,
-    @Body() loginDto: LoginDto,
-  ): Promise<any> {
+  async login(@Req() request, @Res() response: Response, @Body() loginDto: LoginDto): Promise<any> {
     const { id, token } = await this.userService.login(loginDto);
     if (id) {
       request.session.user = token;

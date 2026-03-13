@@ -1,6 +1,6 @@
-import type { AxiosRequestConfig } from 'axios';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import type { AxiosRequestConfig } from 'axios';
 
 @Injectable()
 export class RequestService {
@@ -9,21 +9,17 @@ export class RequestService {
   async getRequest(url: string, config?: AxiosRequestConfig): Promise<any> {
     return new Promise((resolve, reject) => {
       this.httpService.get(url, config).subscribe({
-        next: (res) => resolve(res.data),
-        error: (error) => reject(error),
+        next: res => resolve(res.data),
+        error: error => reject(error),
       });
     });
   }
 
-  async postRequest(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig,
-  ): Promise<any> {
+  async postRequest(url: string, data?: any, config?: AxiosRequestConfig): Promise<any> {
     return new Promise((resolve, reject) => {
       this.httpService.post(url, data, config).subscribe({
-        next: (res) => resolve(res.data),
-        error: (error) => reject(error),
+        next: res => resolve(res.data),
+        error: error => reject(error),
       });
     });
   }

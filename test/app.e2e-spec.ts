@@ -1,11 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as request from 'supertest';
-import AppModule from './../src/app.module';
-import config from './../src/config/config.default';
-import ValidationPipe from './../src/common/validation.pipe';
+
+import AppModule from '../src/app.module';
+import ValidationPipe from '../src/common/validation.pipe';
+import config from '../src/config/config.default';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -30,7 +31,7 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/user/login')
       .send({ account: 'admin', password: '888888' })
-      .expect((res) => {
+      .expect(res => {
         expect([200, 201]).toContain(res.status);
       });
   });
