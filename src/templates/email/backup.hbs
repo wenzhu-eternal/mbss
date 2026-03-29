@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据库备份通知</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: 'Microsoft YaHei', Arial, sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4; padding: 40px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <tr>
+            <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center; border-radius: 8px 8px 0 0;">
+              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">数据库备份通知</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 40px 30px;">
+              <p style="margin: 0 0 20px; font-size: 16px; color: #333; line-height: 1.6;">
+                尊敬的 <strong style="color: #667eea;">{{name}}</strong>，您好！
+              </p>
+              <p style="margin: 0 0 30px; font-size: 16px; color: #666; line-height: 1.6;">
+                系统已完成数据库自动备份，备份文件已作为附件发送，请查收。
+              </p>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f8f9fa; border-radius: 8px; margin-bottom: 30px;">
+                <tr>
+                  <td style="padding: 20px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td style="padding: 8px 0; font-size: 14px; color: #666;">备份日期：</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #333; font-weight: 500;">{{backupDate}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0; font-size: 14px; color: #999; text-align: center;">
+                请妥善保管备份文件，注意数据安全
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color: #f8f9fa; padding: 20px 30px; border-radius: 0 0 8px 8px; border-top: 1px solid #eee;">
+              <p style="margin: 0; font-size: 14px; color: #999; text-align: center;">
+                此邮件由系统自动发送，请勿直接回复
+              </p>
+              <p style="margin: 10px 0 0; font-size: 14px; color: #999; text-align: center;">
+                © 2024 易旅客 All Rights Reserved
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

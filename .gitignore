@@ -1,18 +1,15 @@
 # compiled output
+.env*
 /dist
 /node_modules
 /build
-/.husky
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
 mbci.config.js
 
-# Environment variables
-.env
-
-# Cookies
-cookies.txt
+# Uploads
+/uploads
 
 # Logs
 logs

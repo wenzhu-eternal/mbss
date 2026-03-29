@@ -1,29 +1,31 @@
-import config from '@config/config.default';
 import { CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/common';
 
-import UserService from '@/modules/user/user.service';
+import config from '@/config/config.default';
+import AuthService from '@/modules/services/auth';
 
 @Injectable()
 export default class AuthGuard implements CanActivate {
   private readonly logger = new Logger(AuthGuard.name);
 
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly authService: AuthService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    this.logger.log('进入全局权限守卫 :>> ');
+    this.logger.log('进入全局权限守卫');
     const request = context.switchToHttp().getRequest();
-    const url = request.url.split('?')[0];
-
-    if (this.isWhitelisted(url)) {
+    if (this.hasUrl(this.urlList, request.url.split('?')[0])) {
       return true;
     }
 
-    return await this.userService.authService(request);
+    return await this.authService.validateToken(request);
   }
 
-  private readonly urlList: string[] = config.routerWhitelist;
+  private urlList: string[] = config.routerWhitelist || [];
 
-  private isWhitelisted(url: string): boolean {
-    return this.urlList.some(whitelistUrl => url.startsWith(`/api/${whitelistUrl}`));
+  private hasUrl(urlList: string[], url: string): boolean {
+    let flag = false;
+    if (urlList.some(newUrl => url.startsWith(`/api/${newUrl}`))) {
+      flag = true;
+    }
+    return flag;
   }
 }

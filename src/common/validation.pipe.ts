@@ -7,7 +7,7 @@ import {
   Type,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
+import { validate, ValidationError } from 'class-validator';
 
 @Injectable()
 export default class ValidationPipe implements PipeTransform<any> {
@@ -17,17 +17,19 @@ export default class ValidationPipe implements PipeTransform<any> {
       return value;
     }
 
-    const object = plainToInstance(metatype, value, {
-      enableImplicitConversion: true,
-    });
-    const error = await validate(object);
-    if (error.length > 0) {
-      const { constraints } = error[0];
-      const errMessage = Object.values(constraints)[0];
-      throw new HttpException({ message: errMessage }, HttpStatus.BAD_REQUEST);
+    const object = plainToInstance(metatype, value);
+    const errors = await validate(object);
+    if (errors.length > 0) {
+      const firstError = errors[0] as ValidationError;
+      const constraints = firstError.constraints;
+      if (constraints) {
+        const errMessage = Object.values(constraints)[0];
+        throw new HttpException({ message: errMessage }, HttpStatus.BAD_REQUEST);
+      }
+      throw new HttpException({ message: 'Validation failed' }, HttpStatus.BAD_REQUEST);
     }
 
-    return value;
+    return object;
   }
 
   private toValidate(metatype: Type<any>): boolean {

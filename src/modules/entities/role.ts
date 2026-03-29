@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import UserEntity from './user.entity';
+import UserEntity from './user';
 
 @Entity({ name: 'role' })
 export default class RoleEntity {
@@ -12,7 +12,7 @@ export default class RoleEntity {
   @Column({})
   name: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   apiRoutes: string;
 
   @OneToMany(() => UserEntity, userEntity => userEntity.role)

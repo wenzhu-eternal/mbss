@@ -1,18 +1,34 @@
+import { INestApplication } from '@nestjs/common';
 import * as fs from 'fs';
 import { join } from 'path';
 
 import config from '@/config/config.default';
 
-export const apiRoutesFileName = join(config.fileDirName, config.projectName, 'apiRoutes.json');
+export const apiRoutesFileName = join(String(config.uploadDir), 'apiRoutes.json');
 
-export const createApiRoutesJson = app => {
-  const ApiRouters = [];
-  const stack = app?.getHttpAdapter()?.getInstance()?.router?.stack || [];
-  stack?.forEach(layer => (layer?.route ? ApiRouters.push(layer?.route?.path) : null));
-  const filterApiRoutes = ApiRouters.filter(route => route.match(/\/api\//));
+interface RouterLayer {
+  route?: {
+    path: string;
+  };
+}
+
+interface RouterStack {
+  stack?: RouterLayer[];
+}
+
+export const createApiRoutesJson = (app: INestApplication): void => {
+  const apiRouters: string[] = [];
+  const stack =
+    (app?.getHttpAdapter()?.getInstance() as { router?: RouterStack })?.router?.stack || [];
+  stack.forEach(layer => {
+    if (layer?.route) {
+      apiRouters.push(layer.route.path);
+    }
+  });
+  const filterApiRoutes = apiRouters.filter(route => route.match(/\/api\//));
   fs.writeFileSync(apiRoutesFileName, JSON.stringify(filterApiRoutes));
 };
 
-export const getApiRoutesJson = () => {
+export const getApiRoutesJson = (): string => {
   return fs.readFileSync(apiRoutesFileName, 'utf-8');
 };

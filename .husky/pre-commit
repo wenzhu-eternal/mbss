@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+echo "🔍 Running pre-commit checks for Backend API..."
+
+echo ""
+echo "📦 Running lint check..."
+pnpm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ Lint check failed. Please fix the errors before committing."
+  exit 1
+fi
+
+echo ""
+echo "📦 Running type check..."
+npx tsc --noEmit
+if [ $? -ne 0 ]; then
+  echo "❌ Type check failed. Please fix the errors before committing."
+  exit 1
+fi
+
+echo ""
+echo "🎉 All checks passed! Proceeding with commit..."

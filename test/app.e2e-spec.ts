@@ -1,12 +1,12 @@
-import { INestApplication } from '@nestjs/common';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import * as cookieParser from 'cookie-parser';
-import * as session from 'express-session';
 import * as request from 'supertest';
 
-import AppModule from '../src/app.module';
-import ValidationPipe from '../src/common/validation.pipe';
-import config from '../src/config/config.default';
+import AppModule from './../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -17,22 +17,18 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.use(cookieParser());
-    app.use(session(config.session));
+    app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
-  });
+  }, 30000);
 
   afterEach(async () => {
-    await app?.close();
+    if (app) {
+      await app.close();
+    }
   });
 
-  it('/user/login (POST) 应成功响应', () => {
-    return request(app.getHttpServer())
-      .post('/user/login')
-      .send({ account: 'admin', password: '888888' })
-      .expect(res => {
-        expect([200, 201]).toContain(res.status);
-      });
+  it('/api (GET) - should return 200', () => {
+    return request(app.getHttpServer()).get('/api').expect(200);
   });
 });

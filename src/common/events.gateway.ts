@@ -15,35 +15,35 @@ import config from '@/config/config.default';
 @WebSocketGateway({
   cors: { origin: config.allowOrigin },
 })
-class EventsGateway {
+class EvensGateway {
   private readonly redis: Redis;
-  private readonly logger = new Logger(EventsGateway.name);
+  private readonly logger = new Logger(EvensGateway.name);
 
   constructor(private readonly redisService: RedisService) {
     this.redis = this.redisService.getOrThrow();
   }
 
   @SubscribeMessage('addSocket')
-  async onAddSocket(
+  onAddSocket(
     @ConnectedSocket() { id }: Socket,
     @MessageBody() { userId }: { userId: number },
-  ): Promise<void> {
+  ): void {
     if (userId) {
-      await this.redis.hset('socket', String(userId), JSON.stringify({ socketId: id }));
+      void this.redis.hset('socket', String(userId), JSON.stringify({ socketId: id }));
       this.logger.log(`[${dayjs().format('YYYY-MM-DD HH:mm:ss')}] ID为${userId}用户进行socket连接`);
     }
   }
 
-  @SubscribeMessage('deleteSocket')
-  async onDeleteSocket(_, @MessageBody() { userId }: { userId: number }): Promise<void> {
+  @SubscribeMessage('delectSocket')
+  onDelectSocket(_unknown: unknown, @MessageBody() { userId }: { userId: number }): void {
     if (userId) {
-      await this.redis.hdel('socket', String(userId));
+      void this.redis.hdel('socket', String(userId));
       this.logger.log(`[${dayjs().format('YYYY-MM-DD HH:mm:ss')}] ID为${userId}用户断开socket连接`);
     }
   }
 }
 
 @Module({
-  providers: [EventsGateway],
+  providers: [EvensGateway],
 })
 export default class EventsModule {}

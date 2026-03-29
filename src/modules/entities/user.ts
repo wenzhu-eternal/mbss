@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import RoleEntity from './role.entity';
+import RoleEntity from './role';
 
 @Entity({ name: 'user' })
 export default class UserEntity {
@@ -9,16 +9,21 @@ export default class UserEntity {
   })
   id: number;
 
-  @Column({})
+  @Index()
+  @Column({ nullable: true })
   account: string;
 
-  @Column({ select: false })
+  @Column({ nullable: true, select: false })
   password: string;
 
-  @Column({ length: 11 })
+  @Index()
+  @Column({ nullable: true })
+  wxOpenid: string;
+
+  @Column({ nullable: true, length: 11 })
   phone: string;
 
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
   @ManyToOne(() => RoleEntity, roleEntity => roleEntity.users)
@@ -33,6 +38,7 @@ export default class UserEntity {
   @Column({ nullable: true })
   lastLoginTime: Date;
 
+  @Index()
   @Column({ comment: '禁用', default: false })
   isDisable: boolean;
 }

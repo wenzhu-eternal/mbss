@@ -4,6 +4,8 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { ScheduleModule } from 'nest-schedule';
 import { ConfigModule, ConfigService } from 'nestjs-config';
 import { resolve } from 'path';
 
@@ -18,6 +20,10 @@ import { resolve } from 'path';
       useFactory: (config: ConfigService) => config.get('config.default').redis,
       inject: [ConfigService],
     }),
+    MailerModule.forRootAsync({
+      useFactory: (config: ConfigService) => config.get('config.default').mailer,
+      inject: [ConfigService],
+    }),
     JwtModule.registerAsync({
       useFactory: (config: ConfigService) => config.get('config.default').jwtSecret,
       inject: [ConfigService],
@@ -27,6 +33,7 @@ import { resolve } from 'path';
       inject: [ConfigService],
     }),
     HttpModule.register({}),
+    ScheduleModule.register(),
   ],
   exports: [JwtModule, MulterModule, HttpModule],
 })
