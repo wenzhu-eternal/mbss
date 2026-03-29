@@ -22,20 +22,11 @@ import UserService from './services/user';
 @Module({
   imports: [
     OConfigModule,
-    TypeOrmModule.forFeature([
-      RoleEntity,
-      UserEntity,
-      ErrorLogEntity,
-      ErrorWhitelistEntity,
-    ]),
+    TypeOrmModule.forFeature([RoleEntity, UserEntity, ErrorLogEntity, ErrorWhitelistEntity]),
     TasksModule,
     MailModule,
   ],
-  controllers: [
-    UserController,
-    FileController,
-    ErrorLogController,
-  ],
+  controllers: [UserController, FileController, ErrorLogController],
   providers: [
     UserService,
     AuthService,
