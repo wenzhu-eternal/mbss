@@ -99,13 +99,13 @@ modules/
 
 ### 3.2 模块文件职责
 
-| 文件               | 职责                                      |
-| ------------------ | ----------------------------------------- |
-| `controllers/`     | 定义API路由、接收请求、参数验证、调用服务 |
-| `services/`        | 实现业务逻辑、数据库操作、事务管理        |
-| `entities/`        | 定义数据库表结构、字段映射、实体关联      |
-| `dtos/`            | 定义请求/响应数据结构、参数验证规则       |
-| `index.module.ts`  | 聚合模块所有组件、配置依赖注入            |
+| 文件              | 职责                                      |
+| ----------------- | ----------------------------------------- |
+| `controllers/`    | 定义API路由、接收请求、参数验证、调用服务 |
+| `services/`       | 实现业务逻辑、数据库操作、事务管理        |
+| `entities/`       | 定义数据库表结构、字段映射、实体关联      |
+| `dtos/`           | 定义请求/响应数据结构、参数验证规则       |
+| `index.module.ts` | 聚合模块所有组件、配置依赖注入            |
 
 ---
 
@@ -149,13 +149,13 @@ export default class UserController {
 
 ### 4.3 常用装饰器
 
-| 装饰器        | 用途         | 示例                    |
-| ------------- | ------------ | ----------------------- |
-| `@Get()`      | GET请求      | `@Get('findUsers')`     |
-| `@Post()`     | POST请求     | `@Post('addUser')`      |
-| `@Body()`     | 获取请求体   | `@Body() dto: AddUserDto` |
-| `@Query()`    | 获取查询参数 | `@Query() dto: PageDto` |
-| `@Param()`    | 获取路径参数 | `@Param('id') id: number` |
+| 装饰器        | 用途         | 示例                                               |
+| ------------- | ------------ | -------------------------------------------------- |
+| `@Get()`      | GET请求      | `@Get('findUsers')`                                |
+| `@Post()`     | POST请求     | `@Post('addUser')`                                 |
+| `@Body()`     | 获取请求体   | `@Body() dto: AddUserDto`                          |
+| `@Query()`    | 获取查询参数 | `@Query() dto: PageDto`                            |
+| `@Param()`    | 获取路径参数 | `@Param('id') id: number`                          |
 | `@Throttle()` | 限流         | `@Throttle({ default: { limit: 5, ttl: 60000 } })` |
 
 ### 4.4 API 定义规范
@@ -205,7 +205,7 @@ export default class UserService {
   ) {}
 
   async addUser(addUserDto: AddUserDto): Promise<boolean>;
-  async findUsers(pageDto: PageDto): Promise<{ list: User[], total: number }>;
+  async findUsers(pageDto: PageDto): Promise<{ list: User[]; total: number }>;
   async toggleUserStatus(id: number): Promise<boolean>;
 }
 ```
@@ -221,13 +221,13 @@ export default class UserService {
 
 ### 5.3 常用 Repository 方法
 
-| 方法                   | 用途          |
-| ---------------------- | ------------- |
-| `findOne()`            | 查询单条记录  |
-| `find()`               | 查询多条记录  |
-| `findAndCount()`       | 分页查询      |
-| `save()`               | 保存/更新记录 |
-| `update()`             | 更新记录      |
+| 方法             | 用途          |
+| ---------------- | ------------- |
+| `findOne()`      | 查询单条记录  |
+| `find()`         | 查询多条记录  |
+| `findAndCount()` | 分页查询      |
+| `save()`         | 保存/更新记录 |
+| `update()`       | 更新记录      |
 
 ### 5.4 软删除规范
 
@@ -295,14 +295,14 @@ export default class UserEntity {
 
 ### 6.2 实体规范要点
 
-| 规范           | 说明                                          |
-| -------------- | --------------------------------------------- |
-| **表名**       | 使用 `@Entity({ name: 'xxx' })` 定义          |
-| **主键**       | 使用 `@PrimaryGeneratedColumn()`              |
-| **索引**       | 使用 `@Index()` 标注需要索引的字段            |
-| **关联关系**   | `@ManyToOne`、`@OneToMany`、`@OneToOne`       |
-| **敏感字段**   | 使用 `select: false` 隐藏（如密码）           |
-| **软删除字段** | 每个实体必须包含 `isDisable` 字段             |
+| 规范           | 说明                                    |
+| -------------- | --------------------------------------- |
+| **表名**       | 使用 `@Entity({ name: 'xxx' })` 定义    |
+| **主键**       | 使用 `@PrimaryGeneratedColumn()`        |
+| **索引**       | 使用 `@Index()` 标注需要索引的字段      |
+| **关联关系**   | `@ManyToOne`、`@OneToMany`、`@OneToOne` |
+| **敏感字段**   | 使用 `select: false` 隐藏（如密码）     |
+| **软删除字段** | 每个实体必须包含 `isDisable` 字段       |
 
 ### 6.3 常用装饰器
 
@@ -365,12 +365,12 @@ export class UpdateUserDto extends PartialType(AddUserDto) {
 
 ### 7.2 DTO规范要点
 
-| 规范           | 说明                                   |
-| -------------- | -------------------------------------- |
-| **API文档**    | 使用 `@ApiProperty()` 描述字段         |
-| **验证装饰器** | 使用 `class-validator` 装饰器验证参数  |
-| **继承**       | 相似DTO使用继承减少重复代码            |
-| **只读属性**   | 使用 `readonly` 确保数据不可变         |
+| 规范           | 说明                                  |
+| -------------- | ------------------------------------- |
+| **API文档**    | 使用 `@ApiProperty()` 描述字段        |
+| **验证装饰器** | 使用 `class-validator` 装饰器验证参数 |
+| **继承**       | 相似DTO使用继承减少重复代码           |
+| **只读属性**   | 使用 `readonly` 确保数据不可变        |
 
 ### 7.3 常用验证装饰器
 
@@ -499,15 +499,15 @@ export default defineConfig({
 
 ### 9.2 配置项说明
 
-| 配置项            | 说明                       |
-| ----------------- | -------------------------- |
-| `allowOrigin`     | CORS 允许的域名            |
-| `routerWhitelist` | 无需登录的路由白名单       |
-| `jwtSecret`       | JWT 密钥和过期时间         |
-| `mysql`           | MySQL 数据库连接配置       |
-| `redis`           | Redis 连接配置             |
-| `session`         | Session 配置               |
-| `mailer`          | 邮件服务配置               |
+| 配置项            | 说明                 |
+| ----------------- | -------------------- |
+| `allowOrigin`     | CORS 允许的域名      |
+| `routerWhitelist` | 无需登录的路由白名单 |
+| `jwtSecret`       | JWT 密钥和过期时间   |
+| `mysql`           | MySQL 数据库连接配置 |
+| `redis`           | Redis 连接配置       |
+| `session`         | Session 配置         |
+| `mailer`          | 邮件服务配置         |
 
 ---
 
@@ -535,7 +535,7 @@ async function bootstrap() {
   // 静态资源
   app.useStaticAssets(join(__dirname, 'public'));
 
-  await app.listen(9001);
+  await app.listen(9000);
 }
 ```
 
@@ -543,15 +543,15 @@ async function bootstrap() {
 
 ## 十一、架构优势
 
-| 特性           | 说明                                       |
-| -------------- | ------------------------------------------ |
-| **分层清晰**   | Controller-Service-Entity-DTO 四层架构     |
-| **类型安全**   | 完整的 TypeScript 类型定义                 |
-| **统一响应**   | 响应拦截器统一处理响应格式                 |
-| **统一错误**   | 异常过滤器统一处理错误响应                 |
-| **参数验证**   | DTO + class-validator 自动验证             |
-| **XSS防护**    | 管道和中间件双重 XSS 清理                  |
-| **权限控制**   | 全局守卫统一验证 Token                     |
-| **缓存机制**   | Redis 缓存提升性能                         |
-| **软删除**     | 数据安全，支持恢复                         |
-| **API文档**    | Swagger 自动生成 API 文档                  |
+| 特性         | 说明                                   |
+| ------------ | -------------------------------------- |
+| **分层清晰** | Controller-Service-Entity-DTO 四层架构 |
+| **类型安全** | 完整的 TypeScript 类型定义             |
+| **统一响应** | 响应拦截器统一处理响应格式             |
+| **统一错误** | 异常过滤器统一处理错误响应             |
+| **参数验证** | DTO + class-validator 自动验证         |
+| **XSS防护**  | 管道和中间件双重 XSS 清理              |
+| **权限控制** | 全局守卫统一验证 Token                 |
+| **缓存机制** | Redis 缓存提升性能                     |
+| **软删除**   | 数据安全，支持恢复                     |
+| **API文档**  | Swagger 自动生成 API 文档              |
