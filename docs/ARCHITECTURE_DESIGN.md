@@ -48,9 +48,90 @@ mbss/
 
 ---
 
-## 二、分层架构
+## 二、命名规范
 
-### 2.1 架构分层
+### 2.1 文件命名规范
+
+| 文件类型       | 命名格式                | 示例                       |
+| -------------- | ----------------------- | -------------------------- |
+| 业务模块文件   | `{module}.ts`           | `user.ts`、`boss.ts`       |
+| 公共组件文件   | `{name}.{type}.ts`      | `auth.guard.ts`、`http-exception.filter.ts` |
+
+### 2.2 类命名规范
+
+| 类类型 | 命名格式                | 示例                               |
+| ------ | ----------------------- | ---------------------------------- |
+| 核心类 | `{Resource}{Type}`      | `UserController`、`UserService`、`UserEntity` |
+| DTO    | `{Action}{Resource}Dto` | `AddUserDto`、`UpdateUserDto`      |
+| 公共类 | `{Name}{Type}`          | `AuthGuard`、`HttpExceptionFilter` |
+
+### 2.3 DTO 命名规范
+
+| 操作类型 | 命名格式                    | 示例                             |
+| -------- | --------------------------- | -------------------------------- |
+| 数据操作 | `{Action}{Resource}Dto`     | `AddUserDto`、`UpdateUserDto`    |
+| 通用查询 | `{Purpose}Dto`              | `PageDto`、`IdDto`、`TimeRangeDto` |
+| 状态切换 | `Toggle{Resource}StatusDto` | `ToggleUserStatusDto`            |
+
+### 2.4 Entity 字段命名规范
+
+| 字段类型 | 命名格式                        | 示例                   |
+| -------- | ------------------------------- | ---------------------- |
+| 主键     | `id`                            | `id`                   |
+| 外键关联 | `{relation}`                    | `role`、`user`、`boss` |
+| 时间字段 | `{action}Time` 或 `{name}Time`  | `createTime`、`lastLoginTime` |
+| 布尔字段 | `is`/`has`/`can` 前缀          | `isDisable`、`hasPermission` |
+| 业务字段 | 小驼峰，语义清晰                | `actualDate`、`wxOpenid` |
+
+### 2.5 数据库表命名规范
+
+| 规则       | 说明                              | 示例                                    |
+| ---------- | --------------------------------- | --------------------------------------- |
+| 单词表名   | 小写，单数名词                    | `user`、`role`、`transaction`           |
+| 多词表名   | 下划线分隔（snake_case），单数名词 | `error_log`、`error_whitelist`          |
+| 索引字段   | 使用 `@Index()` 装饰器            | `account`、`wxOpenid`                   |
+
+### 2.6 导出规范
+
+| 规范     | 说明                                     |
+| -------- | ---------------------------------------- |
+| 默认导出 | 所有类使用 `export default` 导出         |
+| 命名导出 | DTO 类使用 `export` 命名导出（支持继承） |
+
+```typescript
+// 默认导出（Controller、Service、Entity、Guard等）
+export default class UserController {}
+
+// 命名导出（DTO）
+export class AddUserDto {}
+export class UpdateUserDto {}
+```
+
+### 2.7 变量命名规范
+
+| 类型       | 命名格式              | 示例                              |
+| ---------- | --------------------- | --------------------------------- |
+| 变量/属性  | 小驼峰                | `userName`、`userRepository`      |
+| 常量       | 全大写下划线          | `MAX_SIZE`、`DEFAULT_PAGE`        |
+| 布尔变量   | `is`/`has`/`can` 前缀 | `isDisable`、`hasPermission`      |
+| 函数/方法  | 小驼峰，动词开头      | `findUsers`、`addUser`            |
+
+### 2.8 API 命名规范
+
+| 操作类型  | 命名格式                 | 示例                       |
+| --------- | ------------------------ | -------------------------- |
+| 查询列表  | `find{Resource}s`        | `findUsers`、`findRoles`   |
+| 查询单条  | `find{Resource}` 或 `get{Resource}` | `findUser`、`getUser`、`findRole`、`getRole` |
+| 添加      | `add{Resource}`          | `addUser`、`addRole`       |
+| 更新      | `update{Resource}`       | `updateUser`、`updateRole` |
+| 启用/禁用 | `toggle{Resource}Status` | `toggleUserStatus`         |
+| 删除      | `delete{Resource}`       | `deleteUser`               |
+
+---
+
+## 三、分层架构
+
+### 3.1 架构分层
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -68,7 +149,7 @@ mbss/
 └─────────────────────────────────────────────────────────┘
 ```
 
-### 2.2 各层职责
+### 3.2 各层职责
 
 | 层级           | 目录           | 职责                                          |
 | -------------- | -------------- | --------------------------------------------- |
@@ -79,9 +160,9 @@ mbss/
 
 ---
 
-## 三、模块结构
+## 四、模块结构
 
-### 3.1 模块级标准结构
+### 4.1 模块级标准结构
 
 ```
 modules/
@@ -97,7 +178,7 @@ modules/
 └── index.module.ts        # 模块聚合
 ```
 
-### 3.2 模块文件职责
+### 4.2 模块文件职责
 
 | 文件              | 职责                                      |
 | ----------------- | ----------------------------------------- |
@@ -109,9 +190,9 @@ modules/
 
 ---
 
-## 四、控制器层 (Controller)
+## 五、控制器层 (Controller)
 
-### 4.1 控制器规范
+### 5.1 控制器规范
 
 ```typescript
 @ApiTags('用户')
@@ -137,7 +218,7 @@ export default class UserController {
 }
 ```
 
-### 4.2 控制器规范要点
+### 5.2 控制器规范要点
 
 | 规范           | 说明                                        |
 | -------------- | ------------------------------------------- |
@@ -147,7 +228,7 @@ export default class UserController {
 | **参数装饰器** | `@Body()`、`@Query()`、`@Param()`、`@Req()` |
 | **限流**       | 敏感接口使用 `@Throttle()` 装饰器           |
 
-### 4.3 常用装饰器
+### 5.3 常用装饰器
 
 | 装饰器        | 用途         | 示例                                               |
 | ------------- | ------------ | -------------------------------------------------- |
@@ -158,20 +239,9 @@ export default class UserController {
 | `@Param()`    | 获取路径参数 | `@Param('id') id: number`                          |
 | `@Throttle()` | 限流         | `@Throttle({ default: { limit: 5, ttl: 60000 } })` |
 
-### 4.4 API 定义规范
+### 5.4 API 定义规范
 
-#### 4.4.1 路由命名规范
-
-| 操作类型  | 命名格式                 | 示例                       |
-| --------- | ------------------------ | -------------------------- |
-| 查询列表  | `find{Resource}s`        | `findUsers`、`findRoles`   |
-| 查询单条  | `find{Resource}`         | `findUser`、`findRole`     |
-| 添加      | `add{Resource}`          | `addUser`、`addRole`       |
-| 更新      | `update{Resource}`       | `updateUser`、`updateRole` |
-| 启用/禁用 | `toggle{Resource}Status` | `toggleUserStatus`         |
-| 删除      | `delete{Resource}`       | `deleteUser`               |
-
-#### 4.4.2 HTTP 方法选择
+#### 5.4.1 HTTP 方法选择
 
 | 操作类型  | HTTP 方法 | 说明                |
 | --------- | --------- | ------------------- |
@@ -180,7 +250,7 @@ export default class UserController {
 | 更新      | `POST`    | 参数通过 Body 传递  |
 | 启用/禁用 | `GET`     | 参数通过 Query 传递 |
 
-#### 4.4.3 响应格式规范
+#### 5.4.2 响应格式规范
 
 ```typescript
 // 成功响应
@@ -192,9 +262,9 @@ export default class UserController {
 
 ---
 
-## 五、服务层 (Service)
+## 六、服务层 (Service)
 
-### 5.1 服务规范
+### 6.1 服务规范
 
 ```typescript
 @Injectable()
@@ -210,7 +280,7 @@ export default class UserService {
 }
 ```
 
-### 5.2 服务规范要点
+### 6.2 服务规范要点
 
 | 规范         | 说明                                  |
 | ------------ | ------------------------------------- |
@@ -219,7 +289,7 @@ export default class UserService {
 | **错误处理** | 使用 `HttpException` 抛出标准错误     |
 | **事务**     | 复杂操作使用 `@Transaction()` 装饰器  |
 
-### 5.3 常用 Repository 方法
+### 6.3 常用 Repository 方法
 
 | 方法             | 用途          |
 | ---------------- | ------------- |
@@ -229,7 +299,7 @@ export default class UserService {
 | `save()`         | 保存/更新记录 |
 | `update()`       | 更新记录      |
 
-### 5.4 软删除规范
+### 6.4 软删除规范
 
 项目采用**软删除**机制，通过 `isDisable` 字段控制记录状态。
 
@@ -261,9 +331,9 @@ await this.userRepository.update({ id }, { isDisable: true, updateTime: new Date
 
 ---
 
-## 六、实体层 (Entity)
+## 七、实体层 (Entity)
 
-### 6.1 实体规范
+### 7.1 实体规范
 
 ```typescript
 @Entity({ name: 'user' })
@@ -293,7 +363,7 @@ export default class UserEntity {
 }
 ```
 
-### 6.2 实体规范要点
+### 7.2 实体规范要点
 
 | 规范           | 说明                                    |
 | -------------- | --------------------------------------- |
@@ -304,7 +374,7 @@ export default class UserEntity {
 | **敏感字段**   | 使用 `select: false` 隐藏（如密码）     |
 | **软删除字段** | 每个实体必须包含 `isDisable` 字段       |
 
-### 6.3 常用装饰器
+### 7.3 常用装饰器
 
 | 装饰器                      | 用途         |
 | --------------------------- | ------------ |
@@ -315,7 +385,7 @@ export default class UserEntity {
 | `@ManyToOne()`              | 多对一关系   |
 | `@OneToMany()`              | 一对多关系   |
 
-### 6.4 实体修改的线上兼容方案
+### 7.4 实体修改的线上兼容方案
 
 | 步骤 | 操作       | 说明                               |
 | ---- | ---------- | ---------------------------------- |
@@ -335,9 +405,9 @@ export default class UserEntity {
 
 ---
 
-## 七、DTO层 (Data Transfer Object)
+## 八、DTO层 (Data Transfer Object)
 
-### 7.1 DTO规范
+### 8.1 DTO规范
 
 ```typescript
 export class AddUserDto {
@@ -363,7 +433,7 @@ export class UpdateUserDto extends PartialType(AddUserDto) {
 }
 ```
 
-### 7.2 DTO规范要点
+### 8.2 DTO规范要点
 
 | 规范           | 说明                                  |
 | -------------- | ------------------------------------- |
@@ -372,7 +442,7 @@ export class UpdateUserDto extends PartialType(AddUserDto) {
 | **继承**       | 相似DTO使用继承减少重复代码           |
 | **只读属性**   | 使用 `readonly` 确保数据不可变        |
 
-### 7.3 常用验证装饰器
+### 8.3 常用验证装饰器
 
 | 装饰器          | 用途       |
 | --------------- | ---------- |
@@ -383,7 +453,7 @@ export class UpdateUserDto extends PartialType(AddUserDto) {
 | `@IsEmail()`    | 邮箱格式   |
 | `@Length()`     | 长度范围   |
 
-### 7.4 通用 DTO
+### 8.4 通用 DTO
 
 ```typescript
 // dtos/common.ts
@@ -407,9 +477,9 @@ export class IdDto {
 
 ---
 
-## 八、公共模块 (Common)
+## 九、公共模块 (Common)
 
-### 8.1 公共模块结构
+### 9.1 公共模块结构
 
 ```
 common/
@@ -427,7 +497,7 @@ common/
 └── validation.pipe.ts         # 验证管道
 ```
 
-### 8.2 公共组件职责
+### 9.2 公共组件职责
 
 | 组件                       | 职责                                    |
 | -------------------------- | --------------------------------------- |
@@ -442,7 +512,7 @@ common/
 | `events.gateway.ts`        | WebSocket网关，实时通信                 |
 | `tasks.service.ts`         | 定时任务服务，数据库备份                |
 
-### 8.3 权限守卫
+### 9.3 权限守卫
 
 ```typescript
 @Injectable()
@@ -459,9 +529,9 @@ export default class AuthGuard implements CanActivate {
 
 ---
 
-## 九、配置模块 (Config)
+## 十、配置模块 (Config)
 
-### 9.1 配置结构
+### 10.1 配置结构
 
 ```typescript
 export default defineConfig({
@@ -497,7 +567,7 @@ export default defineConfig({
 });
 ```
 
-### 9.2 配置项说明
+### 10.2 配置项说明
 
 | 配置项            | 说明                 |
 | ----------------- | -------------------- |
@@ -511,9 +581,9 @@ export default defineConfig({
 
 ---
 
-## 十、应用入口 (main.ts)
+## 十一、应用入口 (main.ts)
 
-### 10.1 应用启动配置
+### 11.1 应用启动配置
 
 ```typescript
 async function bootstrap() {
@@ -541,7 +611,7 @@ async function bootstrap() {
 
 ---
 
-## 十一、架构优势
+## 十二、架构优势
 
 | 特性         | 说明                                   |
 | ------------ | -------------------------------------- |
